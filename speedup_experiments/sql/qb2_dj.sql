@@ -1,0 +1,2 @@
+\timing
+SELECT "db_dbattribute"."dbnode_id", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" WHERE ("db_dbattribute"."dbnode_id" IN (SELECT U0."id" FROM "db_dbnode" U0 INNER JOIN "db_dbgroup_dbnodes" U1 ON ( U0."id" = U1."dbnode_id" ) INNER JOIN "db_dbgroup" U2 ON ( U1."dbgroup_id" = U2."id" ) WHERE (U2."name"::text LIKE '20160216%' AND U2."name"::text LIKE '%164009')) AND "db_dbattribute"."key"::text LIKE 'cell%');
