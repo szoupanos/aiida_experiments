@@ -2,7 +2,7 @@
 AiiDA experiments on speed increase and space improvements
 
 Space savings
--------------
+=============
 Comments on structure data usage:
 - we use structure data because they are a good example. I.e. they are used in calculations (inputs & outputs) and they have various information that are stored as attributes (interesting for our backend comparison)
 - the CIF files contain more information than what we store in AiiDA (database) for a structure data object
