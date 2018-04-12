@@ -10,8 +10,8 @@ import os
 from ase.io import read
 
 extension='.cif'
-in_directory = '/home/szoupanos/space_saving_tests/structures_1000_cif'
-out_directory = '/home/szoupanos/space_saving_tests/structures_1000_xsf'
+in_directory = '/home/szoupanos/structure_datasets/big/extracted_cif'
+out_directory = '/home/szoupanos/structure_datasets/big/converted_xsf'
 
 paths = glob.glob("{}/*{}".format(in_directory,extension))
 

@@ -7,7 +7,7 @@ import random
 
 extension='.xsf'
 directory = '/home/szoupanos/structure_datasets/medium_10k/converted_xsf'
-expected_file_no = 3
+expected_file_no = 10000
 
 paths = glob.glob("{}/*{}".format(directory,extension))
 actual_file_no = len(paths)

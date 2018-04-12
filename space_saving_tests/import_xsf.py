@@ -11,7 +11,7 @@ from ase.io import read
 from aiida.orm.data.structure import StructureData
 
 extension='.xsf'
-in_directory = '/home/szoupanos/space_saving_tests/structures_1000_xsf'
+in_directory = '/home/szoupanos/structure_datasets/medium_10k/converted_xsf'
 
 paths = glob.glob("{}/*{}".format(in_directory,extension))
 
