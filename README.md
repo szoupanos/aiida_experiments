@@ -41,7 +41,7 @@ Space saving experiments
 
 
 > **Small datase experiment (~1000 structure data files) **  
-> Dataset: /home/szoupanos/structure_datasets/medium_10k/converted_xsf  
+> Dataset: /home/szoupanos/structure_datasets/small_1k/converted_xsf (provided by Leopold)  
 > SQLA DB: aiidadb_space1_sqla  
 > Django DB: aiidadb_space1_dj  
 >   

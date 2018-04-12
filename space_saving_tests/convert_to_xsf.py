@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-from aiida import load_dbenv, is_dbenv_loaded
-if not is_dbenv_loaded():
-    load_dbenv()
 
 import sys
 import glob
@@ -10,8 +7,8 @@ import os
 from ase.io import read
 
 extension='.cif'
-in_directory = '/home/szoupanos/structure_datasets/big/extracted_cif'
-out_directory = '/home/szoupanos/structure_datasets/big/converted_xsf'
+in_directory = '/home/szoupanos/structure_datasets/small_1k/extracted_cif/structures_1000'
+out_directory = '/home/szoupanos/structure_datasets/small_1k/converted_xsf'
 
 paths = glob.glob("{}/*{}".format(in_directory,extension))
 
