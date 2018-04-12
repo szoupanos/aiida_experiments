@@ -29,3 +29,27 @@ of the repository to the size of the DB for the full amount of data
 stored by AiiDA.
 
 Spyros: I understand that the same stands for the XSF files loaded as StructureData.
+
+
+Space saving experiments
+------------------------
+
+**Database size calculated by the following command:**
+`SELECT pg_size_pretty(pg_database_size('aiidadb_space2_sqla')) As fulldbsize;`
+**File size calculated by the following command:**
+`du -h .`
+
+
+> **Small datase experiment (~1000 structure data files) **
+> Django database size: 2045 MB
+> SQLA database size: 45 MB
+> File size: 65
+
+> **Medium dataset experiment**
+> Dataset: /home/szoupanos/structure_datasets/medium_10k/converted_xsf
+> SQLA DB: aiidadb_space2_sqla
+> Django DB: aiidadb_space2_dj
+> 
+> Django database size: 22 GB (22528 MB)
+> SQLA database size: 424 MB
+> File size: 721 MB
