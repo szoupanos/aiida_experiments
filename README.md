@@ -40,16 +40,16 @@ Space saving experiments
 `du -h .`
 
 
-> **Small datase experiment (~1000 structure data files) **
-> Django database size: 2045 MB
-> SQLA database size: 45 MB
-> File size: 65
+> **Small datase experiment (~1000 structure data files) **  
+> Django database size: 2045 MB  
+> SQLA database size: 45 MB  
+> File size: 65  
 
-> **Medium dataset experiment**
-> Dataset: /home/szoupanos/structure_datasets/medium_10k/converted_xsf
-> SQLA DB: aiidadb_space2_sqla
-> Django DB: aiidadb_space2_dj
-> 
-> Django database size: 22 GB (22528 MB)
-> SQLA database size: 424 MB
+> **Medium dataset experiment**  
+> Dataset: /home/szoupanos/structure_datasets/medium_10k/converted_xsf  
+> SQLA DB: aiidadb_space2_sqla  
+> Django DB: aiidadb_space2_dj  
+>   
+> Django database size: 22 GB (22528 MB)  
+> SQLA database size: 424 MB  
 > File size: 721 MB
