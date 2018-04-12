@@ -51,7 +51,7 @@ Space saving experiments
 
 > **Medium dataset experiment**  
 > Dataset: /home/szoupanos/structure_datasets/medium_10k/converted_xsf  
-> (The dataset resulted from the 47k structure dataset that Leopold provided that was converted by converting the CIFs to XSFs by using convert_to_xsf.py and then randomly deleting files to 10k using the randomly_delete.py
+> (The dataset resulted from the 47k structure dataset that Leopold provided that was converted by converting the CIFs to XSFs by using convert_to_xsf.py and then randomly deleting files to 10k using the randomly_delete.py)
 > SQLA DB: aiidadb_space2_sqla  
 > Django DB: aiidadb_space2_dj  
 >   
