@@ -1,0 +1,67 @@
+Switch timing on & off
+\timing
+
+DB reset
+sync; service postgresql stop; echo 3 > /proc/sys/vm/drop_caches; service postgresql start
+
+========================================================
+========================================================
+Database: aiidadb_mounet_new_dj
+--------------------------------
+(not sure if the DB was cold)
+
+(aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ time verdi -p mounet_dj run q_py_dj.py "20160222-225236" "cell"
+
+aiidadb_mounet_new_dj=# SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbnode"."nodeversion", "db_dbnode"."public", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ( "db_dbattribute"."dbnode_id" = "db_dbnode"."id" ) INNER JOIN "db_dbgroup_dbnodes" ON ( "db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id" ) WHERE ("db_dbattribute"."key"::text LIKE 'cell%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" FROM "db_dbgroup" U0 WHERE U0."name" = '20160222-225236'));
+
+Try 1: Time: 1420238.260 ms
+
+--------------------------------
+(cold DB)
+
+(aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ time verdi -p mounet_dj run q_py_dj.py "20160222-225236" "kinds"
+
+SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbnode"."nodeversion", "db_dbnode"."public", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ( "db_dbattribute"."dbnode_id" = "db_dbnode"."id" ) INNER JOIN "db_dbgroup_dbnodes" ON ( "db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id" ) WHERE ("db_dbattribute"."key"::text LIKE 'kinds%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" FROM "db_dbgroup" U0 WHERE U0."name" = '20160222-225236'))
+
+
+
+========================================================
+========================================================
+Database: aiidadb_mounet_new_sqla
+--------------------------------
+(cold DB)
+
+(aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ time verdi -p mounet_sqla run q_py_sqla.py "20160222-225236" "cell"
+
+aiidadb_mounet_new_sqla=# SELECT db_dbgroup.id, db_dbnode.uuid, db_dbnode.type, db_dbnode.label, db_dbnode.description, db_dbnode.ctime, db_dbnode.mtime, db_dbnode.nodeversion, db_dbnode.public, db_dbnode.attributes -> 'cell' AS anon_1
+aiidadb_mounet_new_sqla-# FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup.id = db_dbgroup_dbnodes_1.dbgroup_id JOIN db_dbnode ON db_dbnode.id = db_dbgroup_dbnodes_1.dbnode_id
+aiidadb_mounet_new_sqla-# WHERE db_dbgroup.name = '20160222-225236' AND (db_dbnode.attributes ? 'cell');
+
+Try 1: Time: 19443.762 ms / 19.443762 sec
+Try 2: Time: 19796.725 ms / 19.796725 sec
+Try 3: Time: 19333.014 ms / 19.333014 sec
+
+--------------------------------
+(cold DB)
+
+(aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ time verdi -p mounet_sqla run q_py_sqla.py "20160222-225236" "kinds"
+
+aiidadb_mounet_new_sqla=# SELECT db_dbgroup.id, db_dbnode.uuid, db_dbnode.type, db_dbnode.label, db_dbnode.description, db_dbnode.ctime, db_dbnode.mtime, db_dbnode.nodeversion, db_dbnode.public, db_dbnode.attributes -> 'kinds' AS anon_1
+aiidadb_mounet_new_sqla-# FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup.id = db_dbgroup_dbnodes_1.dbgroup_id JOIN db_dbnode ON db_dbnode.id = db_dbgroup_dbnodes_1.dbnode_id
+aiidadb_mounet_new_sqla-# WHERE db_dbgroup.name = '20160222-225236' AND (db_dbnode.attributes ? 'kinds');
+
+Try 1: Time: 19660.286 ms
+Try 2: Time: 19918.963 ms / 
+Try 3: Time: 19671.706 ms
+
+--------------------------------
+(cold DB)
+
+aiidadb_mounet_new_sqla=# SELECT db_dbgroup.id, db_dbnode.uuid, db_dbnode.type, db_dbnode.label, db_dbnode.description, db_dbnode.ctime, db_dbnode.mtime, db_dbnode.nodeversion, db_dbnode.public, db_dbnode.attributes -> 'sites' AS anon_1
+FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup.id = db_dbgroup_dbnodes_1.dbgroup_id JOIN db_dbnode ON db_dbnode.id = db_dbgroup_dbnodes_1.dbnode_id
+WHERE db_dbgroup.name = '20160222-225236' AND (db_dbnode.attributes ? 'sites');
+
+Try 1: Time: 12888.922 ms
+Try 2: Time: 22450.556 ms
+Try 3: Time: 22689.995 ms
+Try 4: Time: 22169.775 ms
