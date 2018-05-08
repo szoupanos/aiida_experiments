@@ -15,15 +15,30 @@ Database: aiidadb_mounet_new_dj
 aiidadb_mounet_new_dj=# SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbnode"."nodeversion", "db_dbnode"."public", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ( "db_dbattribute"."dbnode_id" = "db_dbnode"."id" ) INNER JOIN "db_dbgroup_dbnodes" ON ( "db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id" ) WHERE ("db_dbattribute"."key"::text LIKE 'cell%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" FROM "db_dbgroup" U0 WHERE U0."name" = '20160222-225236'));
 
 Try 1: Time: 1420238.260 ms
+Time: 2052195.636 ms
 
 --------------------------------
 (cold DB)
 
 (aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ time verdi -p mounet_dj run q_py_dj.py "20160222-225236" "kinds"
 
-SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbnode"."nodeversion", "db_dbnode"."public", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ( "db_dbattribute"."dbnode_id" = "db_dbnode"."id" ) INNER JOIN "db_dbgroup_dbnodes" ON ( "db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id" ) WHERE ("db_dbattribute"."key"::text LIKE 'kinds%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" FROM "db_dbgroup" U0 WHERE U0."name" = '20160222-225236'))
+aiidadb_mounet_new_dj=# SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbnode"."nodeversion", "db_dbnode"."public", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ( "db_dbattribute"."dbnode_id" = "db_dbnode"."id" ) INNER JOIN "db_dbgroup_dbnodes" ON ( "db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id" ) WHERE ("db_dbattribute"."key"::text LIKE 'kinds%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" FROM "db_dbgroup" U0 WHERE U0."name" = '20160222-225236'));
 
+Try 1: Time: 1422019.282 ms
+Time: 1421088.446 ms
+Time: 1421582.310 ms
 
+--------------------------------
+(cold DB)
+
+(aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ time verdi -p mounet_dj run q_py_dj.py "20160222-225236" "sites"
+
+aiidadb_mounet_new_dj=# SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbnode"."nodeversion", "db_dbnode"."public", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ( "db_dbattribute"."dbnode_id" = "db_dbnode"."id" ) INNER JOIN "db_dbgroup_dbnodes" ON ( "db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id" ) WHERE ("db_dbattribute"."key"::text LIKE 'sites%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" FROM "db_dbgroup" U0 WHERE U0."name" = '20160222-225236'));
+
+Time: 1552095.847 ms
+Time: 1548960.599 ms
+Time: 1550219.549 ms
+Time: 1550509.603 ms
 
 ========================================================
 ========================================================
