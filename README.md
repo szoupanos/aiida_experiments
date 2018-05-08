@@ -9,8 +9,7 @@ Comments on the speed experiments
 - Both contain 7318371 number of nodes
 - The experiments are carried on the a set that contains 1124139 number of nodes
 
-For the AiiDA experiment, 
-- the SQLA query is the following:
+For the AiiDA experiment, the SQLA query is the following:
 > session.query(DbGroup.id, DbNode.uuid, DbNode.type, DbNode.label, DbNode.description, DbNode.ctime, DbNode.mtime, DbNode.nodeversion, DbNode.public, DbNode.attributes[(attr_name)]).filter(DbGroup.name == group_choice).join(DbGroup.dbnodes).filter(DbNode.attributes.has_key(attr_name))
 
 And the Django query is the following:
@@ -18,9 +17,45 @@ And the Django query is the following:
 
 The group_choice is "20160222-225236" and the attr_name among "cell" "kinds" "sites"
 
- 
+For the SQL level experiment, the queries are as follows (where cell can be replaced with any of the  "cell" "kinds" "sites" - for different attribute size):
+SQLA
+> SELECT db_dbgroup.id, db_dbnode.uuid, db_dbnode.type, db_dbnode.label, db_dbnode.description, db_dbnode.ctime, db_dbnode.mtime, db_dbnode.nodeversion, db_dbnode.public, db_dbnode.attributes -> 'cell' AS anon_1
+aiidadb_mounet_new_sqla-# FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup.id = db_dbgroup_dbnodes_1.dbgroup_id JOIN db_dbnode ON db_dbnode.id = db_dbgroup_dbnodes_1.dbnode_id
+aiidadb_mounet_new_sqla-# WHERE db_dbgroup.name = '20160222-225236' AND (db_dbnode.attributes ? 'cell');
+Django
+> SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbnode"."nodeversion", "db_dbnode"."public", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ( "db_dbattribute"."dbnode_id" = "db_dbnode"."id" ) INNER JOIN "db_dbgroup_dbnodes" ON ( "db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id" ) WHERE ("db_dbattribute"."key"::text LIKE 'cell%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" FROM "db_dbgroup" U0 WHERE U0."name" = '20160222-225236'));
 
+For all the experiments the database was reset with the following command
+sync; service postgresql stop; echo 3 > /proc/sys/vm/drop_caches; service postgresql start
 
+The SQL level results are the following ones:
+---------------------------------------------
+**Database: aiidadb_mounet_new_dj, Attribute choice: "cell"**
+Try 1: Time: 1420238.260 ms
+Try 2: Time: 2052195.636 ms
+**Database: aiidadb_mounet_new_dj, Attribute choice: "kinds"**
+Try 1: Time: 1422019.282 ms
+Try 2: Time: 1421088.446 ms
+Try 3: Time: 1421582.310 ms
+**Database: aiidadb_mounet_new_dj, Attribute choice: "sites"**
+Try 1: Time: 1552095.847 ms
+Try 2: Time: 1548960.599 ms
+Try 3: Time: 1550219.549 ms
+Try 4: Time: 1550509.603 ms
+
+**Database: aiidadb_mounet_new_sqla, Attribute choice: "cell"**
+Try 1: Time: 19443.762 ms / 19.443762 sec
+Try 2: Time: 19796.725 ms / 19.796725 sec
+Try 3: Time: 19333.014 ms / 19.333014 sec
+**Database: aiidadb_mounet_new_sqla, Attribute choice: "kinds"**
+Try 1: Time: 19660.286 ms
+Try 2: Time: 19918.963 ms
+Try 3: Time: 19671.706 ms
+**Database: aiidadb_mounet_new_sqla, Attribute choice: "sites"**
+Try 1: Time: 12888.922 ms
+Try 2: Time: 22450.556 ms
+Try 3: Time: 22689.995 ms
+Try 4: Time: 22169.775 ms
 
 Space savings
 =============
