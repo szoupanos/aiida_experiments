@@ -25,8 +25,10 @@ aiidadb_mounet_new_sqla-# WHERE db_dbgroup.name = '20160222-225236' AND (db_dbno
 Django
 > SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbnode"."nodeversion", "db_dbnode"."public", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ( "db_dbattribute"."dbnode_id" = "db_dbnode"."id" ) INNER JOIN "db_dbgroup_dbnodes" ON ( "db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id" ) WHERE ("db_dbattribute"."key"::text LIKE 'cell%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" FROM "db_dbgroup" U0 WHERE U0."name" = '20160222-225236'));
 
-For all the experiments the database was reset with the following command
+For all the experiments the database was reset with the following command (cold database) 
 sync; service postgresql stop; echo 3 > /proc/sys/vm/drop_caches; service postgresql start
+
+More detailed information about the following results can be found at the files speed_tests_aiida.txt and speed_tests_sql_queries.txt
 
 The SQL level results are the following ones:
 ---------------------------------------------
@@ -56,6 +58,41 @@ Try 1: Time: 12888.922 ms
 Try 2: Time: 22450.556 ms  
 Try 3: Time: 22689.995 ms  
 Try 4: Time: 22169.775 ms  
+
+The AiiDA level results are the following ones:
+-----------------------------------------------
+(we need to compare the timings of the time command and what was measured by the python time
+**Database: aiidadb_mounet_new_dj, Attribute choice: "cell"**  
+Try 1: Time:  1417.21063685 secs
+Try 2: Time:  1419.3495729 secs
+Result size: 974246
+
+**Database: aiidadb_mounet_new_dj, Attribute choice: "kinds"**  
+Try 1: Time:  1424.208534 secs
+Try 2: Time:  1425.2271049 secs
+Result size: 2143568
+
+**Database: aiidadb_mounet_new_dj, Attribute choice: "sites"**  
+Try 1: Time:  4856.43849516 secs
+Try 2: Time:  4842.77732611 secs
+Try 3: Time:  4843.52382708 secs
+Result size: 67033568
+
+**Database: aiidadb_mounet_new_sqla, Attribute choice: "cell"** 
+Try 1: Time:  14.0829310417 secs
+Try 2: Time:  13.9867520332 secs
+Result size: 74942
+
+**Database: aiidadb_mounet_new_sqla, Attribute choice: "kinds"**  
+Try 1: Time:  16.3615100384 secs
+Try 2: Time:  15.898925066 secs
+Result size: 74942
+
+**Database: aiidadb_mounet_new_sqla, Attribute choice: "sites"**  
+Try 1: Time:  83.6835131645 secs
+Try 2: Time:  83.6638581753 secs
+Result size: 74942
+
 
 Space savings
 =============
