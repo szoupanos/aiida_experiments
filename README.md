@@ -9,8 +9,16 @@ Comments on the speed experiments
 - Both contain 7318371 number of nodes
 - The experiments are carried on the a set that contains 1124139 number of nodes
 
-For the AiiDA experiment, the SQLA query is the following:
+For the AiiDA experiment, 
+- the SQLA query is the following:
 > session.query(DbGroup.id, DbNode.uuid, DbNode.type, DbNode.label, DbNode.description, DbNode.ctime, DbNode.mtime, DbNode.nodeversion, DbNode.public, DbNode.attributes[(attr_name)]).filter(DbGroup.name == group_choice).join(DbGroup.dbnodes).filter(DbNode.attributes.has_key(attr_name))
+
+And the Django query is the following:
+> DbAttribute.objects.filter(key__startswith=attr_name).filter(dbnode__dbgroups__in=group).values_list("dbnode__dbgroups__id", "dbnode__id", "dbnode__uuid", "dbnode__type", "dbnode__label", "dbnode__description", "dbnode__ctime", "dbnode__mtime", "dbnode__nodeversion", "dbnode__public", "key","datatype", "tval", "fval", "ival", "bval", "dval")
+
+The group_choice is "20160222-225236" and the attr_name among "cell" "kinds" "sites"
+
+ 
 
 
 
