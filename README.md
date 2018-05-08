@@ -1,6 +1,19 @@
 # aiida_experiments
 AiiDA experiments on speed increase and space improvements
 
+Speed experiments
+=================
+Comments on the speed experiments
+- The following information are from experiments on aiidadb_mounet_new_sqla and on aiidadb_mounet_new_dj databases
+- The size of the aiidadb_mounet_new_dj is 92 GB and the size of aiidadb_mounet_new_sqla is 23GB
+- Both contain 7318371 number of nodes
+- The experiments are carried on the a set that contains 1124139 number of nodes
+
+For the AiiDA experiment, the SQLA query is the following:
+> session.query(DbGroup.id, DbNode.uuid, DbNode.type, DbNode.label, DbNode.description, DbNode.ctime, DbNode.mtime, DbNode.nodeversion, DbNode.public, DbNode.attributes[(attr_name)]).filter(DbGroup.name == group_choice).join(DbGroup.dbnodes).filter(DbNode.attributes.has_key(attr_name))
+
+
+
 Space savings
 =============
 Comments on structure data usage:
