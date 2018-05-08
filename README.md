@@ -30,9 +30,9 @@ sync; service postgresql stop; echo 3 > /proc/sys/vm/drop_caches; service postgr
 
 The SQL level results are the following ones:
 ---------------------------------------------
-**Database: aiidadb_mounet_new_dj, Attribute choice: "cell"**
-Try 1: Time: 1420238.260 ms
-Try 2: Time: 2052195.636 ms
+**Database: aiidadb_mounet_new_dj, Attribute choice: "cell"**  
+Try 1: Time: 1420238.260 ms  
+Try 2: Time: 2052195.636 ms  
 **Database: aiidadb_mounet_new_dj, Attribute choice: "kinds"**
 Try 1: Time: 1422019.282 ms
 Try 2: Time: 1421088.446 ms
