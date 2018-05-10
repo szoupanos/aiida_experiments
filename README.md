@@ -58,17 +58,22 @@ Try 1: Time: 19443.762 ms / 19.443762 sec
 Try 2: Time: 19796.725 ms / 19.796725 sec  
 Try 3: Time: 19333.014 ms / 19.333014 sec  
 
-
+Avg: 19524,500333333333333 ms  -> 19,524500333333333333 sec  
 
 **Database: aiidadb_mounet_new_sqla, Attribute choice: "kinds"**  
 Try 1: Time: 19660.286 ms  
 Try 2: Time: 19918.963 ms  
 Try 3: Time: 19671.706 ms  
+
+Avg: 19750,318333333333333333 ms  -> 19,750318333333333333333 sec  
+
 **Database: aiidadb_mounet_new_sqla, Attribute choice: "sites"**  
 Try 1: Time: 12888.922 ms  (too low - maybe the database was not reset properly)
 Try 2: Time: 22450.556 ms  
 Try 3: Time: 22689.995 ms  
 Try 4: Time: 22169.775 ms  
+
+Avg: 22436,775333333333333333 ms  -> 22,436775333333333333333 sec  
 
 The AiiDA level results are the following ones:
 -----------------------------------------------
