@@ -79,35 +79,53 @@ The AiiDA level results are the following ones:
 -----------------------------------------------
 (we need to compare the timings of the time command and what was measured by the python time
 **Database: aiidadb_mounet_new_dj, Attribute choice: "cell"**  
-Try 1: Time:  1417.21063685 secs
-Try 2: Time:  1419.3495729 secs
-Result size: 974246
+Try 1: Time:  1417,21063685 secs
+Try 2: Time:  1419,3495729 secs
+
+Avg: 1418,280104875 sec  
+
+Result size: 974246  
 
 **Database: aiidadb_mounet_new_dj, Attribute choice: "kinds"**  
-Try 1: Time:  1424.208534 secs
-Try 2: Time:  1425.2271049 secs
+Try 1: Time:  1424,208534 secs
+Try 2: Time:  1425,2271049 secs
+
+Avg: 1424,71781945 sec  
+
 Result size: 2143568
 
 **Database: aiidadb_mounet_new_dj, Attribute choice: "sites"**  
-Try 1: Time:  4856.43849516 secs
-Try 2: Time:  4842.77732611 secs
-Try 3: Time:  4843.52382708 secs
+Try 1: Time:  4856,43849516 secs
+Try 2: Time:  4842,77732611 secs
+Try 3: Time:  4843,52382708 secs
+
+Avg: 4847,579882783333333 sec  
+
 Result size: 67033568
 
 **Database: aiidadb_mounet_new_sqla, Attribute choice: "cell"** 
-Try 1: Time:  14.0829310417 secs
-Try 2: Time:  13.9867520332 secs
+Try 1: Time:  14,0829310417 secs
+Try 2: Time:  13,9867520332 secs
+
+Avg: 14,03484153745 sec  
+
 Result size: 74942
 
 **Database: aiidadb_mounet_new_sqla, Attribute choice: "kinds"**  
-Try 1: Time:  16.3615100384 secs
-Try 2: Time:  15.898925066 secs
+Try 1: Time:  16,3615100384 secs
+Try 2: Time:  15,898925066 secs
+
+Avg: 16,1302175522 sec  
+
 Result size: 74942
 
 **Database: aiidadb_mounet_new_sqla, Attribute choice: "sites"**  
-Try 1: Time:  83.6835131645 secs
-Try 2: Time:  83.6638581753 secs
-Result size: 74942
+Try 1: Time:  83,6835131645 secs
+Try 2: Time:  83,6638581753 secs  
+
+Avg: 83,6736856699 sec  
+
+Result size: 74942  
 
 
 Space savings
