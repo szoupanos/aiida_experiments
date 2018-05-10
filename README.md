@@ -34,27 +34,38 @@ The SQL level results are the following ones:
 ---------------------------------------------
 **Database: aiidadb_mounet_new_dj, Attribute choice: "cell"**  
 Try 1: Time: 1420238.260 ms  
-Try 2: Time: 2052195.636 ms  
+Try 2: Time: 2052195.636 ms  (too  high - should be repeated)  
+
+Avg: 420238.260 ms  -> 420.238260 sec  
+
 **Database: aiidadb_mounet_new_dj, Attribute choice: "kinds"**  
 Try 1: Time: 1422019.282 ms  
 Try 2: Time: 1421088.446 ms  
 Try 3: Time: 1421582.310 ms  
+
+Avg: 1421563.346 ms  -> 1421,563346 sec  
+
 **Database: aiidadb_mounet_new_dj, Attribute choice: "sites"**  
 Try 1: Time: 1552095.847 ms  
 Try 2: Time: 1548960.599 ms  
 Try 3: Time: 1550219.549 ms  
 Try 4: Time: 1550509.603 ms  
 
+Avg: 1550446.3995 ms  -> 1550,4463995 sec  
+
 **Database: aiidadb_mounet_new_sqla, Attribute choice: "cell"**  
 Try 1: Time: 19443.762 ms / 19.443762 sec  
 Try 2: Time: 19796.725 ms / 19.796725 sec  
 Try 3: Time: 19333.014 ms / 19.333014 sec  
+
+
+
 **Database: aiidadb_mounet_new_sqla, Attribute choice: "kinds"**  
 Try 1: Time: 19660.286 ms  
 Try 2: Time: 19918.963 ms  
 Try 3: Time: 19671.706 ms  
 **Database: aiidadb_mounet_new_sqla, Attribute choice: "sites"**  
-Try 1: Time: 12888.922 ms  
+Try 1: Time: 12888.922 ms  (too low - maybe the database was not reset properly)
 Try 2: Time: 22450.556 ms  
 Try 3: Time: 22689.995 ms  
 Try 4: Time: 22169.775 ms  
