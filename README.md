@@ -3,6 +3,11 @@ AiiDA experiments on speed increase and space improvements
 
 Speed experiments
 =================
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/graphs/attr_queries_joc.svg "Speed-up experiments Jocelyn")
+
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/graphs/attr_queries_spy.svg "Speed-up experiments Jocelyn")
+
+
 Comments on the speed experiments
 - The following information are from experiments on aiidadb_mounet_new_sqla and on aiidadb_mounet_new_dj databases
 - The size of the aiidadb_mounet_new_dj is 92 GB and the size of aiidadb_mounet_new_sqla is 23GB
@@ -36,7 +41,7 @@ The SQL level results are the following ones:
 Try 1: Time: 1420238.260 ms  
 Try 2: Time: 2052195.636 ms  (too  high - should be repeated)  
 
-Avg: 420238.260 ms  -> 420.238260 sec  
+Avg: 1420238.260 ms  -> 1420.238260 sec  
 
 **Database: aiidadb_mounet_new_dj, Attribute choice: "kinds"**  
 Try 1: Time: 1422019.282 ms  
@@ -130,6 +135,9 @@ Result size: 74942
 
 Space savings
 =============
+
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/graphs/space_lrg.svg "Space saving experiments Spyros")
+
 Comments on structure data usage:
 - we use structure data because they are a good example. I.e. they are used in calculations (inputs & outputs) and they have various information that are stored as attributes (interesting for our backend comparison)
 - the CIF files contain more information than what we store in AiiDA (database) for a structure data object
