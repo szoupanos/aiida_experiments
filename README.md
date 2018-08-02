@@ -193,3 +193,12 @@ Space saving experiments
 > Django database size: 22 GB (22528 MB)  
 > SQLA database size: 424 MB  
 > File size: 721 MB
+
+DbPath experiments
+==================
+Information about the DbPath experiments can be found at the PDF at the corresponding folder
+
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/graphs/desc_anc_pop.svg "Descendants/ancestors popularity")
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/graphs/max_depth_pop.svg "Max depth popularity")
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/graphs/max_height_pop.svg "Max height popularity")
+
