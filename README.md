@@ -201,4 +201,4 @@ Information about the DbPath experiments can be found at the PDF at the correspo
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/graphs/desc_anc_pop.svg "Descendants/ancestors popularity")
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/graphs/max_depth_pop.svg "Max depth popularity")
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/graphs/max_height_pop.svg "Max height popularity")
-
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/graphs/max_depth_height_pop.svg "Max depth/height popularity")
