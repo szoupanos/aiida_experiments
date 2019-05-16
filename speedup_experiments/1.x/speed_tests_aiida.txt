@@ -1,0 +1,144 @@
+DB reset
+sync; service postgresql stop; echo 3 > /proc/sys/vm/drop_caches; service postgresql start
+========================================================
+========================================================
+
+
+
+
+
+
+
+
+
+<--------------------------------- OLD DATA --------------------------------->
+
+(cold DB)
+(aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ time verdi -p mounet_dj run q_py_dj.py "20160222-225236" "cell"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 1417.21063685, Result size: 974246
+
+real    23m59.621s
+user    0m4.652s
+sys     0m2.204s
+--------------------------------
+(cold DB)
+(aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ time verdi -p mounet_dj run q_py_dj.py "20160222-225236" "cell"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 1419.3495729, Result size: 974246
+
+real    24m2.198s
+user    0m4.460s
+sys     0m2.028s
+--------------------------------
+(not sure if the DB was cold)
+verdi -p mounet_dj run q_py_dj.py "20160222-225236" "cell"
+Query time (in secs): 1418.71583104, Result size: 974246
+--------------------------------
+(not cold DB)
+(aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ verdi -p mounet_dj run q_py_dj.py "20160222-225236" "kinds"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 25.8126561642, Result size: 2143568
+--------------------------------
+(cold DB)
+(aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ verdi -p mounet_dj run q_py_dj.py "20160222-225236" "kinds"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 1424.208534, Result size: 2143568
+--------------------------------
+(cold DB)
+(aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ verdi -p mounet_dj run q_py_dj.py "20160222-225236" "sites"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 4856.43849516, Result size: 67033568
+--------------------------------
+(cold DB)
+(aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ verdi -p mounet_dj run q_py_dj.py "20160222-225236" "sites"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 4842.77732611, Result size: 67033568
+--------------------------------
+(cold DB)
+(aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ time verdi -p mounet_dj run q_py_dj.py "20160222-225236" "kinds"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 1425.2271049, Result size: 2143568
+
+real    24m8.110s
+user    0m9.700s
+sys     0m4.024s
+--------------------------------
+(cold DB)
+(aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ time verdi -p mounet_dj run q_py_dj.py "20160222-225236" "sites"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 4843.52382708, Result size: 67033568
+
+real    220m44.420s
+user    1m52.256s
+sys     1m43.872s
+
+========================================================
+========================================================
+(cold DB)
+(aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ time verdi -p mounet_sqla run q_py_sqla.py "20160222-225236" "cell"
+/home/szoupanos/aiidapy/local/lib/python2.7/site-packages/sqlalchemy_utils/i18n.py:15: ExtDeprecationWarning: Importing flask.ext.babel is deprecated, use flask_babel instead.
+  from flask.ext.babel import get_locale
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 14.0829310417, Result size: 74942
+
+real    0m31.781s
+user    0m1.544s
+sys     0m0.568s
+--------------------------------
+(cold DB)
+(aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ time verdi -p mounet_sqla run q_py_sqla.py "20160222-225236" "cell"
+/home/szoupanos/aiidapy/local/lib/python2.7/site-packages/sqlalchemy_utils/i18n.py:15: ExtDeprecationWarning: Importing flask.ext.babel is deprecated, use flask_babel instead.
+  from flask.ext.babel import get_locale
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 13.9867520332, Result size: 74942
+
+real    0m32.221s
+user    0m1.696s
+sys     0m0.568s
+--------------------------------
+(cold DB)
+(aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ time verdi -p mounet_sqla run q_py_sqla.py "20160222-225236" "kinds"
+/home/szoupanos/aiidapy/local/lib/python2.7/site-packages/sqlalchemy_utils/i18n.py:15: ExtDeprecationWarning: Importing flask.ext.babel is deprecated, use flask_babel instead.
+  from flask.ext.babel import get_locale
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 16.3615100384, Result size: 74942
+
+real    0m34.276s
+user    0m3.552s
+sys     0m0.996s
+--------------------------------
+(cold DB)
+(aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ time verdi -p mounet_sqla run q_py_sqla.py "20160222-225236" "kinds"
+/home/szoupanos/aiidapy/local/lib/python2.7/site-packages/sqlalchemy_utils/i18n.py:15: ExtDeprecationWarning: Importing flask.ext.babel is deprecated, use flask_babel instead.
+  from flask.ext.babel import get_locale
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 15.898925066, Result size: 74942
+
+real    0m34.429s
+user    0m3.696s
+sys     0m0.936s
+--------------------------------
+(cold DB)
+(aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ time verdi -p mounet_sqla run q_py_sqla.py "20160222-225236" "sites"
+/home/szoupanos/aiidapy/local/lib/python2.7/site-packages/sqlalchemy_utils/i18n.py:15: ExtDeprecationWarning: Importing flask.ext.babel is deprecated, use flask_babel instead.
+  from flask.ext.babel import get_locale
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 83.6835131645, Result size: 74942
+
+real    1m44.612s
+user    1m8.040s
+sys     0m4.748s
+--------------------------------
+(cold DB)
+(aiidapy) szoupanos@theospc38:~/aiida_experiments/speedup_experiments$ time verdi -p mounet_sqla run q_py_sqla.py "20160222-225236" "sites"
+/home/szoupanos/aiidapy/local/lib/python2.7/site-packages/sqlalchemy_utils/i18n.py:15: ExtDeprecationWarning: Importing flask.ext.babel is deprecated, use flask_babel instead.
+  from flask.ext.babel import get_locale
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 83.6638581753, Result size: 74942
+
+real    1m43.867s
+user    1m7.692s
+sys     0m4.232s
+
+
