@@ -1,7 +1,6 @@
 import time
 import sys
 
-from aiida.backends.djsite.db.models import DbNode
 from aiida.backends.djsite.db.models import DbGroup
 from django.db.models import Count
 
@@ -23,20 +22,13 @@ group_size = DbGroup.objects.values('label').annotate(node_no=Count('dbnodes')).
 
 
 print("Querying group: {} which size is {}".format(group_choice, group_size))
-#######################################################################################
-# The following query doesn't project the attr_name attributes. It projects all of them
-#######################################################################################
-group = DbGroup.objects.filter(label=group_choice)
-n = DbNode.objects.filter(dbgroups__in=group).filter(attributes__has_key=attr_name).values_list("dbgroups__id", "id", "uuid", "node_type", "process_type" , "label", "description", "ctime", "mtime", "nodeversion", "public", "attributes")
-
-# print n.query
+qb = QueryBuilder()
+qb.append(Group, filters={"label":{"==": "20160222-225236"}}, project=["id"], tag="my_group")
+qb.append(Node, project=["id", "uuid", "node_type", "process_type" , "label", "description", "ctime", "mtime", "nodeversion", "public", "attributes." + group_choice], with_group="my_group")
 
 start = time.time()
-res = list(n.all())
+res = list(qb.all())
 end = time.time()
 
-# print "======="
-# print res[0:5]
-
 # print "==============================="
-print("Query time (in secs): " + str(end - start) + ", Result size: " + str(n.count()))
+print("Query time (in secs): " + str(end - start) + ", Result size: " + str(qb.count()))
