@@ -31,5 +31,5 @@ start = time.time()
 res = list(n.all())
 end = time.time()
 
-# print "==============================="
-print("Query time (in secs): " + str(end - start) + ", Result size: " + str(n.count()))
+print("Query time (in secs): " + str(end - start) + ", Result size: " + str(len(res)))
+print("Size of serialized reply (in bytes): {}".format(len(str(res).encode('utf-8'))))

@@ -4,6 +4,11 @@ sync; service postgresql stop; echo 3 > /proc/sys/vm/drop_caches; service postgr
 ========================================================
 
 <--------------------------------- Django JSONB (using Aldjemy & SQLA for querying) --------------------------------->
+(Cold system)
+
+
+
+-------------------------------- OLD
 
 (aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x$ time verdi -p davide_dj_test run q_py_dj_jsonb_aldjemy.py "20160222-225236" "cell"
 Querying group: 20160222-225236 which size is 1124139
