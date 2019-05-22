@@ -4,37 +4,68 @@ sync; service postgresql stop; echo 3 > /proc/sys/vm/drop_caches; service postgr
 ========================================================
 
 <--------------------------------- Django JSONB (using Aldjemy & SQLA for querying) --------------------------------->
-(Cold system)
 
-
-
--------------------------------- OLD
-
+(Cold DB)
 (aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x$ time verdi -p davide_dj_test run q_py_dj_jsonb_aldjemy.py "20160222-225236" "cell"
 Querying group: 20160222-225236 which size is 1124139
-Query time (in secs): 7.28384590149, Result size: 43991
+Query time (in secs): 434.675969124, Result size: 43991
+Size of serialized reply (in bytes): 18148310
 
-real	0m14.689s
-user	0m2.270s
-sys	0m1.090s
+real	7m40.389s
+user	0m3.017s
+sys	0m0.934s
 
---------------------------------
-
-time verdi -p davide_dj_test run q_py_dj_jsonb_aldjemy.py "20160222-225236" "kinds"
+(Warm DB)
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x$ time verdi -p davide_dj_test run q_py_dj_jsonb_aldjemy.py "20160222-225236" "cell"
 Querying group: 20160222-225236 which size is 1124139
-Query time (in secs): 8.43282389641, Result size: 43991
+Query time (in secs): 7.43345594406, Result size: 43991
+Size of serialized reply (in bytes): 18148310
 
-real	0m15.900s
-user	0m3.262s
-sys	0m1.252s
+real	0m10.174s
+user	0m2.825s
+sys	0m0.922s
 
 --------------------------------
 
+(Cold DB)
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x$ time verdi -p davide_dj_test run q_py_dj_jsonb_aldjemy.py "20160222-225236" "kinds"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 439.714109898, Result size: 43991
+Size of serialized reply (in bytes): 26121084
+
+real	7m45.873s
+user	0m4.274s
+sys	0m1.017s
+
+
+(Warm DB)
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x$ time verdi -p davide_dj_test run q_py_dj_jsonb_aldjemy.py "20160222-225236" "kinds"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 8.8222630024, Result size: 43991
+Size of serialized reply (in bytes): 26121084
+
+real	0m11.918s
+user	0m4.272s
+sys	0m0.974s
+
+--------------------------------
+
+(Cold DB)
 (aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x$ time verdi -p davide_dj_test run q_py_dj_jsonb_aldjemy.py "20160222-225236" "sites"
 Querying group: 20160222-225236 which size is 1124139
-Query time (in secs): 49.5338959694, Result size: 43991
+Query time (in secs): 471.529899836, Result size: 43991
+Size of serialized reply (in bytes): 528292850
 
-real	0m58.385s
-user	0m42.054s
-sys	0m3.183s
+real	8m37.482s
+user	0m59.506s
+sys	0m3.815s
 
+(Warm DB)
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x$ time verdi -p davide_dj_test run q_py_dj_jsonb_aldjemy.py "20160222-225236" "sites"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 49.891561985, Result size: 43991
+Size of serialized reply (in bytes): 528292850
+
+real	1m11.067s
+user	0m59.345s
+sys	0m3.460s
