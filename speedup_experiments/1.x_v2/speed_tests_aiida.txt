@@ -1,0 +1,164 @@
+DB reset
+sync; service postgresql stop; echo 3 > /proc/sys/vm/drop_caches; service postgresql start
+========================================================
+========================================================
+????
+<--------------------------------- Django JSONB (using Aldjemy & SQLA for querying) --------------------------------->
+???? With - Without GIN Index ????
+<---- Cold DB ---->
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x/version_2$ time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy run q_py_dj_jsonb_aldjemy.py "20160222-225236" "cell"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 14.7004039288, Result size: 74942
+Size of serialized reply (in bytes): 30749794
+
+real    0m41.150s
+user    0m3.996s
+sys     0m1.095s
+
+<---- Warm DB ---->
+
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x/version_2$ time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy run q_py_dj_jsonb_aldjemy.py "20160222-225236" "cell"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 10.6582629681, Result size: 74942
+Size of serialized reply (in bytes): 30749794
+
+real    0m13.991s
+user    0m4.001s
+sys     0m0.887s
+
+------------------------------------------------------------------------------------------------
+
+<---- Cold DB ---->
+
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x/version_2$ time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy run q_py_dj_jsonb_aldjemy.py "20160222-225236" "kinds"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 17.2039940357, Result size: 74942
+Size of serialized reply (in bytes): 44410241
+
+real    0m44.356s
+user    0m6.422s
+sys     0m1.279s
+
+<---- Warm DB ---->
+
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x/version_2$ time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy run q_py_dj_jsonb_aldjemy.py "20160222-225236" "kinds"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 12.7463190556, Result size: 74942
+Size of serialized reply (in bytes): 44410241
+
+real    0m16.693s
+user    0m6.476s
+sys     0m1.079s
+
+
+------------------------------------------------------------------------------------------------
+
+<---- Cold DB ---->
+
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x/version_2$ time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy run q_py_dj_jsonb_aldjemy.py "20160222-225236" "sites"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 89.1776680946, Result size: 74942
+Size of serialized reply (in bytes): 914981054
+
+real	2m25.913s
+user	1m43.749s
+sys	0m5.604s
+
+<---- Warm DB ---->
+
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x/version_2$ time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy run q_py_dj_jsonb_aldjemy.py "20160222-225236" "sites"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 86.480340004, Result size: 74942
+Size of serialized reply (in bytes): 914981054
+
+real	2m1.661s
+user	1m44.545s
+sys	0m4.944s
+
+<---- Warm DB ---->
+
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x/version_2$ time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy run q_py_dj_jsonb_aldjemy.py "20160222-225236" "sites"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 85.6309130192, Result size: 74942
+Size of serialized reply (in bytes): 914981054
+
+real	2m0.608s
+user	1m42.973s
+sys	0m5.482s
+
+
+
+
+========================================================
+========================================================
+
+<--------------------------------- Django EAV --------------------------------->
+
+<---- Cold DB ---->
+
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x/version_2$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav.py "20160222-225236" "cell"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 2445.12936711, Result size: 974246
+Size of serialized reply (in bytes): 286239368
+
+real    40m51.177s
+user    0m12.514s
+sys     0m2.731s
+
+<---- Warm DB ---->
+
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x/version_2$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav.py "20160222-225236" "cell"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 28.3529748917, Result size: 974246
+Size of serialized reply (in bytes): 286239368
+
+real    0m34.445s
+user    0m12.892s
+sys     0m2.362s
+
+------------------------------------------------------------------------------------------------
+
+<---- Cold DB ---->
+
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x/version_2$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav.py "20160222-225236" "kinds"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 1553.67158103, Result size: 2143568
+Size of serialized reply (in bytes): 637254932
+
+real    26m11.494s
+user    0m27.256s
+sys     0m4.476s
+
+<---- Warm DB ---->
+
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x/version_2$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav.py "20160222-225236" "kinds"
+Querying group: 20160222-225236 which size is 1124139
+Query time (in secs): 37.5905151367, Result size: 2143568
+Size of serialized reply (in bytes): 637254932
+
+real    0m49.865s
+user    0m26.634s
+sys     0m3.916s
+
+------------------------------------------------------------------------------------------------
+
+<---- Cold DB ---->
+
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x/version_2$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav.py "20160222-225236" "sites"
+Querying group: 20160222-225236 which size is 1124139
+Killed
+
+real    32m7.954s
+user    4m56.137s
+sys     0m53.742s
+
+<---- Warm DB ---->
+
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x/version_2$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav.py "20160222-225236" "sites"
+Querying group: 20160222-225236 which size is 1124139
+Killed
+
+real    33m12.876s
+user    4m56.349s
+
+
