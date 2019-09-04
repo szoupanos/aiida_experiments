@@ -1,0 +1,311 @@
+Smaller DBs
+
+========================================================
+DB reset
+sync; service postgresql stop; echo 3 > /proc/sys/vm/drop_caches; service postgresql start
+========================================================
+========================================================
+
+
+============================================================================
+================================    100k    ================================
+============================================================================
+
+================================ 100k cell ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v2.py "20160222-225236_100k" "cell"
+Querying group: 20160222-225236_100k which size is 100000
+Query time (in secs): 104.367990494, Result size: 100000
+Serialization time (in secs): 531.329961538, Result size: 100000
+Size of serialized reply (in bytes): 25296840
+
+real	10m44.783s
+user	2m25.846s
+sys	0m6.003s
+
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v2.py "20160222-225236_100k" "cell"
+Querying group: 20160222-225236_100k which size is 100000
+Query time (in secs): 50.0944800377, Result size: 100000
+Serialization time (in secs): 80.1784694195, Result size: 100000
+Size of serialized reply (in bytes): 25296840
+
+real	2m12.272s
+user	1m26.001s
+sys	0m3.870s
+
+
+================================ 100k kinds ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v2.py "20160222-225236_100k" "kinds"
+Querying group: 20160222-225236_100k which size is 100000
+Query time (in secs): 105.679629803, Result size: 100000
+Serialization time (in secs): 535.329030275, Result size: 100000
+Size of serialized reply (in bytes): 26404577
+
+real	10m49.754s
+user	2m28.659s
+sys	0m6.185s
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v2.py "20160222-225236_100k" "kinds"
+Querying group: 20160222-225236_100k which size is 100000
+Query time (in secs): 52.3048112392, Result size: 100000
+Serialization time (in secs): 83.7086546421, Result size: 100000
+Size of serialized reply (in bytes): 26404577
+
+real	2m18.076s
+user	1m30.726s
+sys	0m4.064s
+
+
+
+================================ 100k sites ================================
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v2.py "20160222-225236_100k" "sites"
+Querying group: 20160222-225236_100k which size is 100000
+Query time (in secs): 96.7581679821, Result size: 100000
+Serialization time (in secs): 867.37207675, Result size: 100000
+Size of serialized reply (in bytes): 69195079
+
+real	16m14.456s
+user	7m55.272s
+sys	0m5.793s
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v2.py "20160222-225236_100k" "sites"
+Querying group: 20160222-225236_100k which size is 100000
+Query time (in secs): 51.7966566086, Result size: 100000
+Serialization time (in secs): 402.826870441, Result size: 100000
+Size of serialized reply (in bytes): 69195079
+
+real	7m38.096s
+user	6m34.507s
+sys	0m3.962s
+
+
+============================================================================
+================================    200k    ================================
+============================================================================
+
+
+================================ 200k cell ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v2.py "20160222-225236_200k" "cell"
+Querying group: 20160222-225236_200k which size is 200000
+Query time (in secs): 199.617842197, Result size: 200000
+Serialization time (in secs): 1075.65076208, Result size: 200000
+Size of serialized reply (in bytes): 50665162
+
+real	21m27.009s
+user	4m59.466s
+sys	0m11.744s
+
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v2.py "20160222-225236_200k" "cell"
+Querying group: 20160222-225236_200k which size is 200000
+Query time (in secs): 112.15604496, Result size: 200000
+Serialization time (in secs): 193.178024769, Result size: 200000
+Size of serialized reply (in bytes): 50665162
+
+real	5m8.838s
+user	3m11.984s
+sys	0m8.310s
+
+================================ 200k kinds ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v2.py "20160222-225236_200k" "kinds"
+Querying group: 20160222-225236_200k which size is 200000
+Query time (in secs): 197.958178043, Result size: 200000
+Serialization time (in secs): 1081.76971507, Result size: 200000
+Size of serialized reply (in bytes): 53144581
+
+real	21m31.194s
+user	5m1.041s
+sys	0m11.688s
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v2.py "20160222-225236_200k" "kinds"
+Querying group: 20160222-225236_200k which size is 200000
+Query time (in secs): 112.432300568, Result size: 200000
+Serialization time (in secs): 197.316532135, Result size: 200000
+Size of serialized reply (in bytes): 53144581
+
+real	5m13.412s
+user	3m15.875s
+sys	0m7.955s
+
+================================ 200k sites ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v2.py "20160222-225236_200k" "sites"
+Querying group: 20160222-225236_200k which size is 200000
+Query time (in secs): 177.199619293, Result size: 200000
+Serialization time (in secs): 2099.08793998, Result size: 200000
+Size of serialized reply (in bytes): 177774223
+
+real    38m10.975s
+user    21m46.851s
+sys     0m11.229s
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v2.py "20160222-225236_200k" "sites"
+Querying group: 20160222-225236_200k which size is 200000
+Query time (in secs): 99.6575064659, Result size: 200000
+Serialization time (in secs): 1131.48320436, Result size: 200000
+Size of serialized reply (in bytes): 177774223
+
+real    20m38.488s
+user    18m25.250s
+sys     0m7.225s
+
+============================================================================
+================================    300k    ================================
+============================================================================
+
+================================ 300k cell ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v2.py "20160222-225236_300k" "cell"
+Querying group: 20160222-225236_300k which size is 300000
+Query time (in secs): 280.137049675, Result size: 300000
+Serialization time (in secs): 1388.84539986, Result size: 300000
+Size of serialized reply (in bytes): 76020710
+
+real    28m2.659s
+user    7m3.143s
+sys     0m15.727s
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v2.py "20160222-225236_300k" "cell"
+Querying group: 20160222-225236_300k which size is 300000
+Query time (in secs): 174.546649218, Result size: 300000
+Serialization time (in secs): 311.396015644, Result size: 300000
+Size of serialized reply (in bytes): 76020710
+
+real    8m10.995s
+user    4m59.363s
+sys     0m12.113s
+
+
+================================ 300k kinds ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v2.py "20160222-225236_300k" "kinds"
+Querying group: 20160222-225236_300k which size is 300000
+Query time (in secs): 280.53673768, Result size: 300000
+Serialization time (in secs): 1400.02894807, Result size: 300000
+Size of serialized reply (in bytes): 79855512
+
+real    28m14.250s
+user    7m13.681s
+sys     0m16.614s
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v2.py "20160222-225236_300k" "kinds"
+Querying group: 20160222-225236_300k which size is 300000
+Query time (in secs): 164.173539877, Result size: 300000
+Serialization time (in secs): 297.176570654, Result size: 300000
+Size of serialized reply (in bytes): 79855512
+
+real    7m46.277s
+user    4m43.060s
+sys     0m10.988s
+
+================================ 300k sites ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v2.py "20160222-225236_300k" "sites"
+Querying group: 20160222-225236_300k which size is 300000
+Query time (in secs): 246.57468605, Result size: 300000
+Serialization time (in secs): 3044.76532865, Result size: 300000
+Size of serialized reply (in bytes): 286043353
+
+real    55m11.448s
+user    34m9.903s
+sys     0m14.662s
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v2.py "20160222-225236_300k" "sites"
+Querying group: 20160222-225236_300k which size is 300000
+Query time (in secs): 146.191375732, Result size: 300000
+Serialization time (in secs): 1817.56122637, Result size: 300000
+Size of serialized reply (in bytes): 286043353
+
+real    32m54.915s
+user    29m34.447s
+sys     0m9.927s
+
+
+
+
