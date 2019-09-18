@@ -1,0 +1,498 @@
+Smaller DBs
+
+========================================================
+DB reset
+sync; service postgresql stop; echo 3 > /proc/sys/vm/drop_caches; service postgresql start
+========================================================
+========================================================
+
+
+============================================================================
+================================    100k    ================================
+============================================================================
+
+================================ 100k cell ================================
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v3.py "20160222-225236_100k" "cell"
+Querying group: 20160222-225236_100k which size is 100000
+Query time (in secs) [no serialization of attributes]: 487.34069705, Result size: 85852
+Serialization time (in secs): 0.77275800705, Result size: 85852
+Size of non-serialized reply (in bytes): 26169164
+
+Db log:
+-------
+2019-09-17 06:48:46.122 UTC [16574] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'cell%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_100k'))
+2019-09-17 06:56:52.118 UTC [16574] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  EXECUTOR STATISTICS
+2019-09-17 06:56:52.118 UTC [16574] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy DETAIL:  ! system usage stats:
+	!	4.340195 s user, 4.661496 s system, 485.996232 s elapsed
+	!	[4.381885 s user, 4.726348 s system total]
+	!	2887872/0 [2913320/56] filesystem blocks in/out
+	!	0/251579 [3/255507] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	91694/1373 [93134/1375] voluntary/involuntary context switches
+2019-09-17 06:56:52.118 UTC [16574] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'cell%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_100k'))
+2019-09-17 06:56:52.118 UTC [16574] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  duration: 486828.953 ms
+
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v3.py "20160222-225236_100k" "cell"
+Querying group: 20160222-225236_100k which size is 100000
+Query time (in secs) [no serialization of attributes]: 1.79349184036, Result size: 85852
+Serialization time (in secs): 0.772989988327, Result size: 85852
+Size of non-serialized reply (in bytes): 26169164
+
+
+Db log:
+-------
+2019-09-17 06:58:55.307 UTC [16784] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'cell%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_100k'))
+2019-09-17 06:58:56.545 UTC [16784] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  EXECUTOR STATISTICS
+2019-09-17 06:58:56.545 UTC [16784] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy DETAIL:  ! system usage stats:
+	!	1.192837 s user, 0.044709 s system, 1.237522 s elapsed
+	!	[1.230820 s user, 0.051615 s system total]
+	!	0/0 [0/64] filesystem blocks in/out
+	!	0/15980 [0/17145] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	0/2 [9/2] voluntary/involuntary context switches
+2019-09-17 06:58:56.545 UTC [16784] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'cell%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_100k'))
+2019-09-17 06:58:56.545 UTC [16784] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  duration: 1239.963 ms
+
+
+================================ 100k kinds ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v3.py "20160222-225236_100k" "kinds"
+Querying group: 20160222-225236_100k which size is 100000
+Query time (in secs) [no serialization of attributes]: 485.344249964, Result size: 160688
+Serialization time (in secs): 1.56787896156, Result size: 160688
+Size of non-serialized reply (in bytes): 49858217
+
+Db log:
+-------
+2019-09-17 07:06:07.586 UTC [17036] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'kinds%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_100k'))
+2019-09-17 07:14:11.129 UTC [17036] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  EXECUTOR STATISTICS
+2019-09-17 07:14:11.129 UTC [17036] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy DETAIL:  ! system usage stats:
+	!	1.140370 s user, 0.521771 s system, 483.543447 s elapsed
+	!	[1.205897 s user, 0.560316 s system total]
+	!	4288/0 [30104/64] filesystem blocks in/out
+	!	0/544 [6/4472] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	8217/24 [9661/29] voluntary/involuntary context switches
+2019-09-17 07:14:11.129 UTC [17036] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'kinds%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_100k'))
+2019-09-17 07:14:11.130 UTC [17036] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  duration: 484402.198 ms
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v3.py "20160222-225236_100k" "kinds"
+Querying group: 20160222-225236_100k which size is 100000
+Query time (in secs) [no serialization of attributes]: 2.20493292809, Result size: 160688
+Serialization time (in secs): 1.58059501648, Result size: 160688
+Size of non-serialized reply (in bytes): 49858217
+
+Db log:
+-------
+2019-09-17 07:15:00.417 UTC [17214] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'kinds%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_100k'))
+2019-09-17 07:15:01.595 UTC [17214] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  EXECUTOR STATISTICS
+2019-09-17 07:15:01.595 UTC [17214] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy DETAIL:  ! system usage stats:
+	!	0.465909 s user, 0.088634 s system, 1.177298 s elapsed
+	!	[0.507748 s user, 0.093869 s system total]
+	!	0/0 [0/64] filesystem blocks in/out
+	!	0/114 [0/1278] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	4208/44 [4217/44] voluntary/involuntary context switches
+2019-09-17 07:15:01.595 UTC [17214] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'kinds%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_100k'))
+2019-09-17 07:15:01.595 UTC [17214] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  duration: 1180.002 ms
+
+
+
+================================ 100k sites ================================
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v3.py "20160222-225236_100k" "sites"
+Querying group: 20160222-225236_100k which size is 100000
+Query time (in secs) [no serialization of attributes]: 511.26824379, Result size: 3235414
+Serialization time (in secs): 289.062052011, Result size: 3235414
+Size of non-serialized reply (in bytes): 1026947534
+
+Db log:
+-------
+2019-09-17 07:30:47.177 UTC [17626] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'sites%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_100k'))
+2019-09-17 07:38:57.741 UTC [17626] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  EXECUTOR STATISTICS
+2019-09-17 07:38:57.741 UTC [17626] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy DETAIL:  ! system usage stats:
+	!	15.685060 s user, 3.758522 s system, 490.563684 s elapsed
+	!	[15.734259 s user, 3.803621 s system total]
+	!	4288/0 [30096/64] filesystem blocks in/out
+	!	0/533 [6/4469] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	10508/152 [11952/156] voluntary/involuntary context switches
+2019-09-17 07:38:57.741 UTC [17626] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'sites%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_100k'))
+2019-09-17 07:38:57.741 UTC [17626] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  duration: 491423.975 ms
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v3.py "20160222-225236_100k" "sites"
+Querying group: 20160222-225236_100k which size is 100000
+Query time (in secs) [no serialization of attributes]: 26.8007130623, Result size: 3235414
+Serialization time (in secs): 287.974009991, Result size: 3235414
+Size of non-serialized reply (in bytes): 1026947534
+
+Db log:
+-------
+2019-09-17 07:51:43.344 UTC [18015] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'sites%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_100k'))
+2019-09-17 07:51:50.337 UTC [18015] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  EXECUTOR STATISTICS
+2019-09-17 07:51:50.337 UTC [18015] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy DETAIL:  ! system usage stats:
+	!	6.448473 s user, 0.544196 s system, 6.992768 s elapsed
+	!	[6.498350 s user, 0.544196 s system total]
+	!	0/0 [0/64] filesystem blocks in/out
+	!	0/15959 [0/17129] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	0/65 [9/66] voluntary/involuntary context switches
+2019-09-17 07:51:50.337 UTC [18015] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'sites%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_100k'))
+2019-09-17 07:51:50.337 UTC [18015] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  duration: 6995.382 ms
+
+
+============================================================================
+================================    200k    ================================
+============================================================================
+
+
+================================ 200k cell ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v3.py "20160222-225236_200k" "cell"
+Querying group: 20160222-225236_200k which size is 200000
+Query time (in secs) [no serialization of attributes]: 951.408545971, Result size: 170911
+Serialization time (in secs): 1.64967799187, Result size: 170911
+Size of non-serialized reply (in bytes): 51460372
+
+Sum of query and serialization:
+-------------------------------
+951.408545971 + 1.64967799187 = 953.05822396287
+
+Db log:
+-------
+2019-09-18 08:16:30.330 UTC [13469] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'cell%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_200k'))
+2019-09-18 08:32:19.932 UTC [13469] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  EXECUTOR STATISTICS
+2019-09-18 08:32:19.932 UTC [13469] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy DETAIL:  ! system usage stats:
+	!	9.058439 s user, 9.089969 s system, 949.602401 s elapsed
+	!	[9.134017 s user, 9.169930 s system total]
+	!	6407200/0 [6441240/64] filesystem blocks in/out
+	!	0/534159 [3/539175] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	169701/3623 [171681/3626] voluntary/involuntary context switches
+2019-09-18 08:32:19.932 UTC [13469] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'cell%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_200k'))
+2019-09-18 08:32:19.932 UTC [13469] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  duration: 950409.274 ms
+
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v3.py "20160222-225236_200k" "cell"
+Querying group: 20160222-225236_200k which size is 200000
+Query time (in secs) [no serialization of attributes]: 4.44438099861, Result size: 170911
+Serialization time (in secs): 1.55462002754, Result size: 170911
+Size of non-serialized reply (in bytes): 51460372
+
+Sum of query and serialization:
+-------------------------------
+4.44438099861 + 1.55462002754 = 5.99900102615
+
+Db log:
+-------
+2019-09-18 08:56:39.433 UTC [14506] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'cell%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_200k'))
+2019-09-18 08:56:42.815 UTC [14506] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  EXECUTOR STATISTICS
+2019-09-18 08:56:42.815 UTC [14506] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy DETAIL:  ! system usage stats:
+	!	3.295151 s user, 0.085914 s system, 3.380996 s elapsed
+	!	[3.359332 s user, 0.091872 s system total]
+	!	0/0 [0/56] filesystem blocks in/out
+	!	0/33836 [0/35073] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	0/4 [9/4] voluntary/involuntary context switches
+2019-09-18 08:56:42.815 UTC [14506] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'cell%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_200k'))
+2019-09-18 08:56:42.815 UTC [14506] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  duration: 3383.515 ms
+
+================================ 200k kinds ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v3.py "20160222-225236_200k" "kinds"
+Querying group: 20160222-225236_200k which size is 200000
+Query time (in secs) [no serialization of attributes]: 992.551579952, Result size: 349917
+Serialization time (in secs): 3.48254990578, Result size: 349917
+Size of non-serialized reply (in bytes): 106773314
+
+Sum of query and serialization:
+-------------------------------
+992.551579952 + 3.48254990578 = 996.03412985778
+
+Db log:
+-------
+2019-09-18 07:19:51.296 UTC [12233] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'kinds%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_200k'))
+2019-09-18 07:36:20.885 UTC [12233] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  EXECUTOR STATISTICS
+2019-09-18 07:36:20.885 UTC [12233] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy DETAIL:  ! system usage stats:
+	!	9.676862 s user, 8.269847 s system, 989.589381 s elapsed
+	!	[9.766493 s user, 8.319144 s system total]
+	!	6407200/0 [6441240/56] filesystem blocks in/out
+	!	0/534157 [3/539174] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	169626/5147 [171606/5178] voluntary/involuntary context switches
+2019-09-18 07:36:20.885 UTC [12233] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'kinds%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_200k'))
+2019-09-18 07:36:20.885 UTC [12233] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  duration: 990416.956 ms
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v3.py "20160222-225236_200k" "kinds"
+Querying group: 20160222-225236_200k which size is 200000
+Query time (in secs) [no serialization of attributes]: 5.29063200951, Result size: 349917
+Serialization time (in secs): 3.49832701683, Result size: 349917
+Size of non-serialized reply (in bytes): 106773314
+
+Sum of query and serialization:
+-------------------------------
+5.29063200951 + 3.49832701683 = 8.78895902634
+
+Db log:
+-------
+2019-09-18 07:45:39.983 UTC [12801] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'kinds%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_200k'))
+2019-09-18 07:45:43.107 UTC [12801] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  EXECUTOR STATISTICS
+2019-09-18 07:45:43.107 UTC [12801] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy DETAIL:  ! system usage stats:
+	!	2.996005 s user, 0.128011 s system, 3.123974 s elapsed
+	!	[3.043748 s user, 0.131989 s system total]
+	!	0/0 [0/56] filesystem blocks in/out
+	!	0/33834 [0/35072] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	0/10 [9/10] voluntary/involuntary context switches
+2019-09-18 07:45:43.107 UTC [12801] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'kinds%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_200k'))
+2019-09-18 07:45:43.107 UTC [12801] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  duration: 3126.176 ms
+
+
+================================ 200k sites ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v3.py "20160222-225236_200k" "sites"
+Querying group: 20160222-225236_200k which size is 200000
+Query time (in secs) [no serialization of attributes]: 1031.17500901, Result size: 9303943
+Serialization time (in secs): 925.332522869, Result size: 9303943
+Size of non-serialized reply (in bytes): 2905610714
+
+Sum of query and serialization:
+-------------------------------
+1031.17500901 + 925.332522869 = 1956.507531879
+
+Db log:
+-------
+2019-09-17 12:12:02.086 UTC [23437] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'sites%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_200k'))
+2019-09-17 12:28:18.704 UTC [23437] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  EXECUTOR STATISTICS
+2019-09-17 12:28:18.704 UTC [23437] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy DETAIL:  ! system usage stats:
+        !       43.064329 s user, 10.248583 s system, 976.617881 s elapsed
+        !       [43.161824 s user, 10.318780 s system total]
+        !       4288/0 [38680/56] filesystem blocks in/out
+        !       0/537 [6/5553] page faults/reclaims, 0 [0] swaps
+        !       0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+        !       23341/452 [25326/458] voluntary/involuntary context switches
+2019-09-17 12:28:18.704 UTC [23437] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'sites%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_200k'))
+2019-09-17 12:28:18.704 UTC [23437] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  duration: 977463.062 ms
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v3.py "20160222-225236_200k" "sites"
+Querying group: 20160222-225236_200k which size is 200000
+Query time (in secs) [no serialization of attributes]: 76.3318750858, Result size: 9303943
+Serialization time (in secs): 935.542647123, Result size: 9303943
+Size of non-serialized reply (in bytes): 2905610714
+
+Sum of query and serialization:
+-------------------------------
+76.3318750858 + 935.542647123 = 1011.8745222088
+
+Db log:
+-------
+2019-09-18 06:49:36.846 UTC [11366] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup
+_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."pr
+ocess_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattri
+bute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival
+", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribu
+te"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."d
+bnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'sites%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."
+id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_200k'))
+2019-09-18 06:49:57.150 UTC [11366] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  EXECUTOR STATISTICS
+2019-09-18 06:49:57.150 UTC [11366] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy DETAIL:  ! system usage stats:
+        !       16.927396 s user, 3.095558 s system, 20.304126 s elapsed
+        !       [16.991401 s user, 3.103088 s system total]
+        !       0/0 [0/56] filesystem blocks in/out
+        !       0/105 [0/1341] page faults/reclaims, 0 [0] swaps
+        !       0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+        !       751/830 [760/830] voluntary/involuntary context switches
+2019-09-18 06:49:57.150 UTC [11366] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup
+_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."pr
+ocess_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattri
+bute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival
+", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribu
+te"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."d
+bnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'sites%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."
+id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_200k'))
+2019-09-18 06:49:57.150 UTC [11366] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  duration: 20306.761 ms
+
+
+============================================================================
+================================    300k    ================================
+============================================================================
+
+================================ 300k cell ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v3.py "20160222-225236_300k" "cell"
+Querying group: 20160222-225236_300k which size is 300000
+Query time (in secs) [no serialization of attributes]: 1208.24535799, Result size: 255671
+Serialization time (in secs): 2.22278809547, Result size: 255671
+Size of non-serialized reply (in bytes): 76677702
+
+Db log:
+-------
+2019-09-17 08:06:59.476 UTC [18415] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'cell%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_300k'))
+2019-09-17 08:27:05.275 UTC [18415] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  EXECUTOR STATISTICS
+2019-09-17 08:27:05.275 UTC [18415] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy DETAIL:  ! system usage stats:
+	!	13.137610 s user, 11.681639 s system, 1205.799009 s elapsed
+	!	[13.282093 s user, 11.752028 s system total]
+	!	8891168/0 [8939792/56] filesystem blocks in/out
+	!	0/760523 [7/767298] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	219135/5639 [221992/5643] voluntary/involuntary context switches
+2019-09-17 08:27:05.275 UTC [18415] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'cell%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_300k'))
+2019-09-17 08:27:05.275 UTC [18415] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  duration: 1206666.346 ms
+
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v3.py "20160222-225236_300k" "cell"
+Querying group: 20160222-225236_300k which size is 300000
+Query time (in secs) [no serialization of attributes]: 5.97085094452, Result size: 255671
+Serialization time (in secs): 2.31830191612, Result size: 255671
+Size of non-serialized reply (in bytes): 76677702
+
+Db log:
+-------
+2019-09-17 08:29:41.609 UTC [18837] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'cell%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_300k'))
+2019-09-17 08:29:45.991 UTC [18837] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  EXECUTOR STATISTICS
+2019-09-17 08:29:45.991 UTC [18837] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy DETAIL:  ! system usage stats:
+	!	1.179467 s user, 0.309115 s system, 4.382408 s elapsed
+	!	[1.266431 s user, 0.319806 s system total]
+	!	0/0 [0/64] filesystem blocks in/out
+	!	0/118 [0/1481] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	16129/46 [16138/46] voluntary/involuntary context switches
+2019-09-17 08:29:45.991 UTC [18837] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'cell%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_300k'))
+2019-09-17 08:29:45.991 UTC [18837] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  duration: 4385.101 ms
+
+
+================================ 300k kinds ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v3.py "20160222-225236_300k" "kinds"
+Querying group: 20160222-225236_300k which size is 300000
+Query time (in secs) [no serialization of attributes]: 1213.98775506, Result size: 537303
+Serialization time (in secs): 5.43300008774, Result size: 537303
+Size of non-serialized reply (in bytes): 163171421
+
+Db log:
+-------
+2019-09-17 08:33:38.823 UTC [19030] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'kinds%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_300k'))
+2019-09-17 08:53:48.690 UTC [19030] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  EXECUTOR STATISTICS
+2019-09-17 08:53:48.690 UTC [19030] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy DETAIL:  ! system usage stats:
+	!	13.806182 s user, 12.031919 s system, 1209.866622 s elapsed
+	!	[13.936518 s user, 12.117139 s system total]
+	!	8891168/0 [8939616/48] filesystem blocks in/out
+	!	0/760565 [6/767327] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	219348/4042 [222204/4048] voluntary/involuntary context switches
+2019-09-17 08:53:48.690 UTC [19030] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'kinds%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_300k'))
+2019-09-17 08:53:48.690 UTC [19030] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  duration: 1210717.352 ms
+
+<---------------- Warm DB ---------------->
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ verdi -p davide_dj_jsonb_original_seb_copy_m36_copy run q_py_dj_eav_with_ser_v3.py "20160222-225236_300k" "kinds"
+Querying group: 20160222-225236_300k which size is 300000
+Query time (in secs) [no serialization of attributes]: 8.3285150528, Result size: 537303
+Serialization time (in secs): 5.3410551548, Result size: 537303
+Size of non-serialized reply (in bytes): 163171421
+
+Db log:
+-------
+2019-09-17 08:56:51.603 UTC [19462] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'kinds%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_300k'))
+2019-09-17 08:56:56.601 UTC [19462] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  EXECUTOR STATISTICS
+2019-09-17 08:56:56.601 UTC [19462] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy DETAIL:  ! system usage stats:
+	!	4.818642 s user, 0.180069 s system, 4.998666 s elapsed
+	!	[4.917899 s user, 0.180069 s system total]
+	!	0/0 [0/64] filesystem blocks in/out
+	!	0/48193 [0/49539] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	0/20 [9/21] voluntary/involuntary context switches
+2019-09-17 08:56:56.601 UTC [19462] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy STATEMENT:  SELECT "db_dbgroup_dbnodes"."dbgroup_id", "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") INNER JOIN "db_dbgroup_dbnodes" ON ("db_dbnode"."id" = "db_dbgroup_dbnodes"."dbnode_id") WHERE ("db_dbattribute"."key"::text LIKE 'kinds%' AND "db_dbgroup_dbnodes"."dbgroup_id" IN (SELECT U0."id" AS Col1 FROM "db_dbgroup" U0 WHERE U0."label" = '20160222-225236_300k'))
+2019-09-17 08:56:56.601 UTC [19462] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy LOG:  duration: 5001.200 ms
+
+
+================================ 300k sites ================================
+
+
+<---------------- Cold DB ---------------->
+Verdi console:
+--------------
+Out of memory
+
+Db log:
+-------
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+
+Db log:
+-------
+
+
+
