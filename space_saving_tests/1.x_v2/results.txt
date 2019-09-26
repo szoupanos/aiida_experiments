@@ -1,0 +1,48 @@
+Benchmarks on loading 10k structures
+====================================
+
+EAV schema (commit 1956cfad8)
+-----------------------------
+Space:
+postgres=# SELECT pg_size_pretty(pg_database_size('aiidadb_django_eav_space')) As fulldbsize;
+ fulldbsize 
+------------
+ 22 GB
+(1 row)
+
+postgres=# SELECT pg_database_size('aiidadb_django_eav_space') As fulldbsize;
+ fulldbsize  
+-------------
+ 23687584903
+(1 row)
+
+
+Time:
+time verdi -p aiida_django_eav_space run import_xsf.py
+real    1264m13.298s
+user    1167m35.300s
+sys     1m3.635s
+
+
+JSONB schema (commit a7c3ac4e4 -aiida/django_jsonb)
+---------------------------------------------------
+Space:
+postgres=# SELECT pg_size_pretty(pg_database_size('aiidadb_django_jsonb_space')) As fulldbsize;
+ fulldbsize 
+------------
+ 519 MB
+(1 row)
+
+postgres=# SELECT pg_database_size('aiidadb_django_jsonb_space') As fulldbsize;
+ fulldbsize 
+------------
+  544062599
+(1 row)
+
+
+Time:
+time verdi -p aiida_django_jsonb_space run import_xsf.py
+real    93m29.587s
+user    76m59.300s
+sys     0m17.949s
+
