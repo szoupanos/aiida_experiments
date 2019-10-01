@@ -1,5 +1,8 @@
 Benchmarks on loading 10k structures
 ====================================
+Folder with XSF files
+/scratch/spyros_backup/theospc38/home/szoupanos/structure_datasets/medium_10k/converted_xsf
+
 
 EAV schema (commit 1956cfad8)
 -----------------------------
@@ -46,3 +49,9 @@ real    93m29.587s
 user    76m59.300s
 sys     0m17.949s
 
+
+File size of XSDF file folder
+---------------------------------------------------
+
+szoupanos@theospc22:/scratch/spyros_backup/theospc38/home/szoupanos/structure_datasets/medium_10k/converted_xsf$ du  -B1 .
+753803264	.
