@@ -1,0 +1,107 @@
+With GIN index on attributes
+
+aiida_dj_jsonb_original_seb_copy_m37_copy=# explain analyse SELECT db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'sites' AS anon_1 FROM db_dbnode WHERE db_dbnode.attributes ? 'sites';
+                                                            QUERY PLAN
+-----------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on db_dbnode  (cost=94.62..25991.22 rows=7048 width=129) (actual time=991.428..87546.074 rows=739990 loops=1)
+   Recheck Cond: (attributes ? 'sites'::text)
+   Heap Blocks: exact=386623
+   ->  Bitmap Index Scan on attribute_gin  (cost=0.00..92.86 rows=7048 width=0) (actual time=906.248..906.248 rows=739990 loops=1)
+         Index Cond: (attributes ? 'sites'::text)
+ Planning time: 0.229 ms
+ Execution time: 87605.914 ms
+(7 rows)
+
+=================================================================================
+Without GIN index on attributes
+
+aiida_dj_jsonb_original_seb_copy_m37=# explain analyse SELECT db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'sites' AS anon_1 FROM db_dbnode WHERE db_dbnode.attributes ? 'sites';
+                                                              QUERY PLAN
+---------------------------------------------------------------------------------------------------------------------------------------
+ Gather  (cost=1000.00..711340.70 rows=17627 width=129) (actual time=46.152..194520.299 rows=739990 loops=1)
+   Workers Planned: 2
+   Workers Launched: 2
+   ->  Parallel Seq Scan on db_dbnode  (cost=0.00..708552.29 rows=7345 width=129) (actual time=18.283..186799.087 rows=246663 loops=3)
+         Filter: (attributes ? 'sites'::text)
+         Rows Removed by Filter: 2102661
+ Planning time: 293.773 ms
+ Execution time: 194579.540 ms
+(8 rows)
+
+
+=========================================================
+
+aiida_dj_jsonb_original_seb_copy_m37_copy=# explain analyse SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'sites' AS anon_1 FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id WHERE db_dbgroup.label = '20160222-225236' AND db_dbnode.attributes ? 'sites';
+
+                                                                                           QUERY PLAN
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=1.27..2629.85 rows=1 width=133) (actual time=39.516..17227.110 rows=74942 loops=1)
+   ->  Nested Loop  (cost=0.84..1867.27 rows=293 width=8) (actual time=39.170..385.984 rows=1124139 loops=1)
+         ->  Index Scan using db_dbgroup_name_30351f1c64285f22_like on db_dbgroup  (cost=0.41..8.43 rows=1 width=4) (actual time=17.254..17.255 rows=1 loops=1)
+               Index Cond: ((label)::text = '20160222-225236'::text)
+         ->  Index Scan using db_dbgroup_dbnodes_a0b4eda0 on db_dbgroup_dbnodes db_dbgroup_dbnodes_1  (cost=0.43..1785.00 rows=7384 width=8) (actual time=21.909..257.199 rows=1124139 loops=1)
+               Index Cond: (dbgroup_id = db_dbgroup.id)
+   ->  Index Scan using db_dbnode_pkey on db_dbnode  (cost=0.43..2.60 rows=1 width=133) (actual time=0.013..0.013 rows=0 loops=1124139)
+         Index Cond: (id = db_dbgroup_dbnodes_1.dbnode_id)
+         Filter: (attributes ? 'sites'::text)
+         Rows Removed by Filter: 1
+ Planning time: 3.619 ms
+ Execution time: 17232.471 ms
+(12 rows)
+
+================================================================
+aiidadb_django_jsonb_space_copy=# explain analyse SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'sites' AS anon_1 FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id WHERE db_dbgroup.label = '20160222-225236' AND db_dbnode.attributes ? 'sites';
+
+                                                                                          QUERY PLAN
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=32.50..147.78 rows=1 width=616) (actual time=1461.398..1461.398 rows=0 loops=1)
+   ->  Nested Loop  (cost=32.36..146.08 rows=10 width=602) (actual time=2.474..1448.987 rows=10000 loops=1)
+         ->  Bitmap Heap Scan on db_dbnode  (cost=32.08..66.96 rows=10 width=602) (actual time=2.391..1425.406 rows=10000 loops=1)
+               Recheck Cond: (attributes ? 'sites'::text)
+               Heap Blocks: exact=327
+               ->  Bitmap Index Scan on attributes_gin  (cost=0.00..32.08 rows=10 width=0) (actual time=2.073..2.073 rows=10000 loops=1)
+                     Index Cond: (attributes ? 'sites'::text)
+         ->  Index Scan using db_dbgroup_dbnodes_dbnode_id_118b9439 on db_dbgroup_dbnodes db_dbgroup_dbnodes_1  (cost=0.29..7.90 rows=1 width=8) (actual time=0.002..0.002 rows=1 loops=10000)
+               Index Cond: (dbnode_id = db_dbnode.id)
+   ->  Index Scan using db_dbgroup_pkey on db_dbgroup  (cost=0.14..0.17 rows=1 width=4) (actual time=0.001..0.001 rows=0 loops=10000)
+         Index Cond: (id = db_dbgroup_dbnodes_1.dbgroup_id)
+         Filter: ((label)::text = '20160222-225236'::text)
+         Rows Removed by Filter: 1
+ Planning time: 4.974 ms
+ Execution time: 1461.517 ms
+(15 rows)
+
+
+=====
+Good diff in time - to see how many results
+
+aiidadb_django_jsonb_space_copy=# SELECT db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'sites' AS anon_1 FROM db_dbnode WHERE db_dbnode.attributes ? 'sites';
+
+2019-10-03 18:13:34.617 UTC [16487] postgres@aiidadb_django_jsonb_space_copy STATEMENT:  SELECT db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'sites' AS anon_1 FROM db_dbnode WHERE db_dbnode.attributes ? 'sites';
+2019-10-03 18:13:43.208 UTC [16487] postgres@aiidadb_django_jsonb_space_copy LOG:  EXECUTOR STATISTICS
+2019-10-03 18:13:43.208 UTC [16487] postgres@aiidadb_django_jsonb_space_copy DETAIL:  ! system usage stats:
+	!	8.026052 s user, 0.505172 s system, 8.590231 s elapsed
+	!	[8.026052 s user, 0.511875 s system total]
+	!	136/0 [136/24] filesystem blocks in/out
+	!	1/326456 [1/327149] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	873/14 [874/14] voluntary/involuntary context switches
+2019-10-03 18:13:43.208 UTC [16487] postgres@aiidadb_django_jsonb_space_copy STATEMENT:  SELECT db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'sites' AS anon_1 FROM db_dbnode WHERE db_dbnode.attributes ? 'sites';
+2019-10-03 18:13:43.208 UTC [16487] postgres@aiidadb_django_jsonb_space_copy LOG:  duration: 8593.132 ms
+
+------
+
+aiidadb_django_jsonb_space=# SELECT db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'sites' AS anon_1 FROM db_dbnode WHERE db_dbnode.attributes ? 'sites';
+
+
+2019-10-03 18:14:32.375 UTC [16526] postgres@aiidadb_django_jsonb_space STATEMENT:  SELECT db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'sites' AS anon_1 FROM db_dbnode WHERE db_dbnode.attributes ? 'sites';
+2019-10-03 18:15:11.669 UTC [16526] postgres@aiidadb_django_jsonb_space LOG:  EXECUTOR STATISTICS
+2019-10-03 18:15:11.669 UTC [16526] postgres@aiidadb_django_jsonb_space DETAIL:  ! system usage stats:
+	!	8.869886 s user, 1.264842 s system, 39.294597 s elapsed
+	!	[8.875356 s user, 1.266174 s system total]
+	!	977184/0 [977184/16] filesystem blocks in/out
+	!	0/437559 [0/438255] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	10229/2294 [10230/2294] voluntary/involuntary context switches
+2019-10-03 18:15:11.669 UTC [16526] postgres@aiidadb_django_jsonb_space STATEMENT:  SELECT db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'sites' AS anon_1 FROM db_dbnode WHERE db_dbnode.attributes ? 'sites';
+2019-10-03 18:15:11.669 UTC [16526] postgres@aiidadb_django_jsonb_space LOG:  duration: 39297.511 ms
