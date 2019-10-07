@@ -3,12 +3,12 @@
 There are two different kinds of benchmarks that have been peformed.
 Benchmarks to measure speed gains and benchmarks to measure space gains.
 All the benchmarks found below are based on the Django EAV version which is just before and after the conversion to AiiDA Django JSONB.
-This correspond to commit 1956cfad8 for AiiDA Django EAV and a7c3ac4e4 of aiida/django_jsonb branch.
+This corresponds to commit 1956cfad8 for AiiDA Django EAV and a7c3ac4e4 of aiida/django_jsonb branch.
 
 
 Speed benchmarks
 ================
-These are benchmarks performed using the AiiDA Django JSONB and AiiDA Django EAV using an extension of Mounet's database provided by Davide. They were performed using a group of 200.000 nodes. The results using a cold database (database after restart with clean cache) and a warm database (launching the same query for a second time - the database cached contained the previous results).
+These benchmarks were performed using the AiiDA Django JSONB and AiiDA Django EAV using an extension of Mounet's database provided by Davide. They were performed on a group of 200.000 nodes (and in specific cases on a group of 300.000 nodes - it will be mentioned explicitly). The results using a cold database (database after restart with clean cache) and a warm database (launching the same query for a second time - the database cached contained the previous results).
 
 
 Django JSONB (with and without datetime conversion)
