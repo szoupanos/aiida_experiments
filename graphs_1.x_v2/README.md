@@ -77,7 +77,7 @@ Space comparison among:
 The XSFs will not be stored in the repository when I load them in AiiDA.
 
 **Django EAV vs Django JSONB vs disk space size for 100.000 data structures**
-![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/space_saving_tests/1.x_v2/space_v1_10k.svg"")
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/space_saving_tests/1.x_v2/space_v1_10k.svg "")
 
 
 Notes for Spyros
