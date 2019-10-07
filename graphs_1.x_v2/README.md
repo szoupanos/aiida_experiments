@@ -15,7 +15,13 @@ Django EAV vs Django JSONB (without datetime conversion)
 ------------------------------------------------------------------------------------------
 In this set of benchmarks we have deactivated the datetime check and conversion for Django JSONB 
 
-![alt text](https://github.com/szoupanos/speedup_experiments/1.x_v2/graphs/attr_queries_200_cold_with_attr_jsonb_datetime.svg "")
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_cold_with_attr_jsonb_datetime.svg "")
+
+
+
+
+
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/graphs/attr_queries_spy.svg "Speed-up experiments Jocelyn")
 
 
 
