@@ -22,7 +22,7 @@ In this set of benchmarks we check the overhead of the datetime conversion for t
 **With & without datetime conversion on a group of 200K nodes and a warm database**
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_warm_with_attr_jsonb_datetime.svg "")
 
-Data come from the following files:
+Input data can be found at the following files:
 - speed_tests_aiida_jsonb_small.txt (JSONB - with datetime conversion)
 - speed_tests_aiida_jsonb_small_no_datetime.txt (JSONB - without datetime conversion)
 
@@ -39,7 +39,7 @@ The serialization is performed at the Python level
 **Django EAV vs Django JSONB on a group of 200K nodes and a warm database - one EAV query**
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_warm_with_attr_ser_one_eav_query.svg "")
 
-Data come from the following files:
+Input data can be found at the following files:
 - speed_tests_aiida_eav_small_ser_v3.txt (EAV)
 - speed_tests_aiida_jsonb_small.txt (JSONB)
 
@@ -57,7 +57,7 @@ Because of the high volume of attribute queries issues, SQL time in the Django E
 **Django EAV vs Django JSONB on a group of 200K nodes and a warm database - Multiple EAV queries **
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_300_warm_with_attr_ser.svg "")
 
-Data come from the following files:
+Input data can be found at the following files:
 - speed_tests_aiida_jsonb_small.txt (JSONB)
 - to be found for the EAV
 
