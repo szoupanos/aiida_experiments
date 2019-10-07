@@ -55,7 +55,7 @@ Because of the high volume of attribute queries issues, SQL time in the Django E
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_300_cold_with_attr_ser.svg "")
 
 **Django EAV vs Django JSONB on a group of 200K nodes and a warm database - Multiple EAV queries **
-![alt text](https://github.com/szoupanos/aiida_experiments/master/speedup_experiments/1.x_v2/graphs/attr_queries_300_warm_with_attr_ser.svg "")
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_300_warm_with_attr_ser.svg "")
 
 Data come from the following files:
 - speed_tests_aiida_jsonb_small.txt (JSONB)
@@ -77,7 +77,7 @@ Space comparison among:
 The XSFs will not be stored in the repository when I load them in AiiDA.
 
 **Django EAV vs Django JSONB vs disk space size for 100.000 data structures**
-![alt text](https://github.com/szoupanos/aiida_experiments/master/space_saving_tests/1.x_v2/space_v1_10k.svg"")
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/space_saving_tests/1.x_v2/space_v1_10k.svg"")
 
 
 Notes for Spyros
