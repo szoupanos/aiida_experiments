@@ -1,5 +1,45 @@
-# aiida_experiments
-AiiDA experiments on speed increase and space improvements
+# aiida_benchmarks using AiiDA v1
+
+There are two different kinds of benchmarks that have been peformed.
+Benchmarks to measure speed gains and benchmarks to measure space gains.
+All the benchmarks found below are based on the Django EAV version which is just before and after the conversion to AiiDA Django JSONB.
+This correspond to commit 1956cfad8 for AiiDA Django EAV and a7c3ac4e4 of aiida/django_jsonb branch.
+
+
+Speed benchmarks
+================
+These are benchmarks performed using the AiiDA Django JSONB and AiiDA Django EAV using an extension of Mounet's database provided by Davide. They were performed using a group of nodes of various sizes (containing 200.000 & 300.000 nodes). The results using a cold database (database after restart with clean cache) and a warm database (launching the same query for a second time - the database cached contained the previous results).
+
+
+Django EAV vs Django JSONB (without datetime conversion)
+------------------------------------------------------------------------------------------
+In this set of benchmarks we have deactivated the datetime check and conversion for Django JSONB 
+
+![alt text](https://github.com/szoupanos/speedup_experiments/1.x_v2/graphs/attr_queries_200_cold_with_attr_jsonb_datetime.svg "")
+
+
+
+Django EAV vs Django JSONB (with datetime conversion)
+-------------------------------------------------------------------------------------
+
+
+
+In general the
+
+
+I should mention:
+- New space benchmarks.
+- Speed comparison with cold and warm DB for 200k & 300k structures
+    - Here I should have the difference with datetime conversion and non-datetime conversion
+    - I should show the speed test for the QB approach that repeats every attribute query per node
+    - I should show the size of the final result
+    - I should give an intution of the GIN index speed increase
+
+
+
+
+
+
 
 Speed experiments
 =================
