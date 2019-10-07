@@ -11,23 +11,29 @@ Speed benchmarks
 These are benchmarks performed using the AiiDA Django JSONB and AiiDA Django EAV using an extension of Mounet's database provided by Davide. They were performed using a group of nodes of various sizes (containing 200.000 & 300.000 nodes). The results using a cold database (database after restart with clean cache) and a warm database (launching the same query for a second time - the database cached contained the previous results).
 
 
-Django EAV vs Django JSONB (without datetime conversion)
-------------------------------------------------------------------------------------------
-In this set of benchmarks we have deactivated the datetime check and conversion for Django JSONB 
+Django JSONB (with and without datetime conversion)
+---------------------------------------------------------------------------------
+In this set of benchmarks we check the overhead of the datetime conversion for the Django JSONB version with cold and warm database
 
+**With & without datetime conversion on a group of 200K nodes and a cold database**
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_cold_with_attr_jsonb_datetime.svg "")
 
 
-
-
-
-![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/graphs/attr_queries_spy.svg "Speed-up experiments Jocelyn")
-
+**With & without datetime conversion on a group of 200K nodes and a warm database**
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_warm_with_attr_jsonb_datetime.svg "")
 
 
 Django EAV vs Django JSONB (with datetime conversion)
 -------------------------------------------------------------------------------------
+In this set of benchmarks we check the difference between AiiDA Django EAV and Django JSONB with datetime conversion on a cold and a warm database. It is worth noting that in these benchmarks of Django EAV we issue one query to retrieve all the node information and attributes/extras of the nodes of a group. This is different than the default behaviour of AiiDA when using querybuilder that will first get the node information and then for each node, it will fetch its attributes/extras issueing a different query.
 
+The serialization is performed at the Python level
+
+**Django EAV vs Django JSONB on a group of 200K nodes and a cold database**
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_cold_with_attr_jsonb_datetime.svg "")
+
+**Django EAV vs Django JSONB on a group of 200K nodes and a warm database**
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_warm_with_attr_ser_one_eav_query.svg "")
 
 
 In general the
