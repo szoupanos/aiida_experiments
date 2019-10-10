@@ -1,0 +1,445 @@
+Smaller DBs
+
+========================================================
+DB reset
+sync; service postgresql stop; echo 3 > /proc/sys/vm/drop_caches; service postgresql start
+========================================================
+========================================================
+
+
+============================================================================
+================================    200k    ================================
+============================================================================
+
+
+================================ 200k cell ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy_200_no_gin run q_py_dj_jsonb_aldjemy_no_group.py "cell"
+Query time (in secs): 3.07630491257, Result size: 13147
+Size of serialized reply (in bytes): 5463891
+
+real	0m9.433s
+user	0m1.781s
+sys	0m0.910s
+
+Db log:
+-------
+2019-10-09 18:41:22.458 UTC [9216] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'cell' AS anon_1
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id
+	WHERE db_dbnode.attributes ? 'cell'
+2019-10-09 18:41:24.840 UTC [9216] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin LOG:  EXECUTOR STATISTICS
+2019-10-09 18:41:24.840 UTC [9216] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin DETAIL:  ! system usage stats:
+	!	0.638981 s user, 0.130056 s system, 2.382095 s elapsed
+	!	[0.645566 s user, 0.143029 s system total]
+	!	204744/0 [206680/88] filesystem blocks in/out
+	!	1/34061 [3/34994] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	1297/340 [1381/341] voluntary/involuntary context switches
+2019-10-09 18:41:24.840 UTC [9216] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'cell' AS anon_1
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id
+	WHERE db_dbnode.attributes ? 'cell'
+2019-10-09 18:41:24.841 UTC [9216] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin LOG:  duration: 2694.164 ms
+
+SQL query size:
+---------------
+
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy_200_no_gin run q_py_dj_jsonb_aldjemy_no_group.py "cell"
+Query time (in secs): 0.646707057953, Result size: 13147
+Size of serialized reply (in bytes): 5463891
+
+real	0m1.535s
+user	0m1.661s
+sys	0m0.780s
+
+Db log:
+-------
+2019-10-09 18:41:55.189 UTC [9258] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'cell' AS anon_1
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id
+	WHERE db_dbnode.attributes ? 'cell'
+2019-10-09 18:41:55.568 UTC [9258] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin LOG:  EXECUTOR STATISTICS
+2019-10-09 18:41:55.568 UTC [9258] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin DETAIL:  ! system usage stats:
+	!	0.363687 s user, 0.008200 s system, 0.379187 s elapsed
+	!	[0.363687 s user, 0.019982 s system total]
+	!	0/0 [0/88] filesystem blocks in/out
+	!	0/4050 [0/4815] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	25/1 [43/1] voluntary/involuntary context switches
+2019-10-09 18:41:55.568 UTC [9258] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'cell' AS anon_1
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id
+	WHERE db_dbnode.attributes ? 'cell'
+2019-10-09 18:41:55.568 UTC [9258] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin LOG:  duration: 381.083 ms
+
+SQL query size:
+---------------
+
+================================ 200k kinds ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy_200_no_gin run q_py_dj_jsonb_aldjemy_no_group.py "kinds"
+Query time (in secs): 3.54275012016, Result size: 13147
+Size of serialized reply (in bytes): 7641503
+
+real	0m9.952s
+user	0m1.956s
+sys	0m0.872s
+
+Db log:
+-------
+2019-10-09 18:35:40.476 UTC [8885] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'kinds' AS anon_1
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id
+	WHERE db_dbnode.attributes ? 'kinds'
+2019-10-09 18:35:43.201 UTC [8885] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin LOG:  EXECUTOR STATISTICS
+2019-10-09 18:35:43.201 UTC [8885] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin DETAIL:  ! system usage stats:
+	!	0.622184 s user, 0.133684 s system, 2.724285 s elapsed
+	!	[0.627796 s user, 0.147716 s system total]
+	!	189648/0 [191448/88] filesystem blocks in/out
+	!	1/31487 [2/32415] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	1486/257 [1569/258] voluntary/involuntary context switches
+2019-10-09 18:35:43.201 UTC [8885] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'kinds' AS anon_1
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id
+	WHERE db_dbnode.attributes ? 'kinds'
+2019-10-09 18:35:43.201 UTC [8885] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin LOG:  duration: 3037.004 ms
+
+SQL query size:
+---------------
+
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy_200_no_gin run q_py_dj_jsonb_aldjemy_no_group.py "kinds"
+Query time (in secs): 0.781686067581, Result size: 13147
+Size of serialized reply (in bytes): 7641503
+
+real	0m1.723s
+user	0m1.756s
+sys	0m0.877s
+
+Db log:
+-------
+2019-10-09 18:36:35.635 UTC [8940] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'kinds' AS anon_1
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id
+	WHERE db_dbnode.attributes ? 'kinds'
+2019-10-09 18:36:36.035 UTC [8940] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin LOG:  EXECUTOR STATISTICS
+2019-10-09 18:36:36.035 UTC [8940] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin DETAIL:  ! system usage stats:
+	!	0.381730 s user, 0.011643 s system, 0.400723 s elapsed
+	!	[0.389409 s user, 0.015733 s system total]
+	!	0/0 [0/88] filesystem blocks in/out
+	!	0/3937 [0/4696] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	26/1 [43/1] voluntary/involuntary context switches
+2019-10-09 18:36:36.035 UTC [8940] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'kinds' AS anon_1
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id
+	WHERE db_dbnode.attributes ? 'kinds'
+2019-10-09 18:36:36.035 UTC [8940] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin LOG:  duration: 402.509 ms
+
+SQL query size:
+---------------
+
+
+================================ 200k sites ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy_200_no_gin run q_py_dj_jsonb_aldjemy_no_group.py "sites"
+Query time (in secs): 7.31332492828, Result size: 13147
+Size of serialized reply (in bytes): 127914407
+
+real	0m17.866s
+user	0m9.569s
+sys	0m1.504s
+
+Db log:
+-------
+2019-10-09 18:24:43.341 UTC [8384] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'sites' AS anon_1
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id
+	WHERE db_dbnode.attributes ? 'sites'
+2019-10-09 18:24:46.340 UTC [8384] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin LOG:  EXECUTOR STATISTICS
+2019-10-09 18:24:46.340 UTC [8384] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin DETAIL:  ! system usage stats:
+	!	1.411836 s user, 0.167461 s system, 2.998883 s elapsed
+	!	[1.419878 s user, 0.179524 s system total]
+	!	94160/0 [95960/88] filesystem blocks in/out
+	!	0/22117 [1/23044] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	554/332 [638/333] voluntary/involuntary context switches
+2019-10-09 18:24:46.340 UTC [8384] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'sites' AS anon_1
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id
+	WHERE db_dbnode.attributes ? 'sites'
+2019-10-09 18:24:46.340 UTC [8384] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin LOG:  duration: 3310.800 ms
+
+SQL query size:
+---------------
+
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy_200_no_gin run q_py_dj_jsonb_aldjemy_no_group.py "sites"
+Query time (in secs): 4.96505308151, Result size: 13147
+Size of serialized reply (in bytes): 127914407
+
+real	0m10.204s
+user	0m9.332s
+sys	0m1.401s
+
+Db log:
+-------
+2019-10-09 18:28:01.975 UTC [8516] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'sites' AS anon_1
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id
+	WHERE db_dbnode.attributes ? 'sites'
+2019-10-09 18:28:03.042 UTC [8516] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin LOG:  EXECUTOR STATISTICS
+2019-10-09 18:28:03.042 UTC [8516] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin DETAIL:  ! system usage stats:
+	!	0.976735 s user, 0.082323 s system, 1.067350 s elapsed
+	!	[0.986521 s user, 0.083536 s system total]
+	!	0/0 [0/88] filesystem blocks in/out
+	!	0/4701 [0/5461] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	5/2 [22/2] voluntary/involuntary context switches
+2019-10-09 18:28:03.042 UTC [8516] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'sites' AS anon_1
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id
+	WHERE db_dbnode.attributes ? 'sites'
+2019-10-09 18:28:03.042 UTC [8516] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin LOG:  duration: 1069.119 ms
+
+SQL query size:
+---------------
+
+
+============================================================================
+================================    300k    ================================
+============================================================================
+
+================================ 300k cell ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy_300_no_gin run q_py_dj_jsonb_aldjemy_no_group.py "cell"
+Query time (in secs): 5.50369906425, Result size: 19667
+Size of serialized reply (in bytes): 8164031
+
+real    0m12.424s
+user    0m1.953s
+sys     0m0.984s
+
+Db log:
+-------
+2019-10-09 11:36:14.200 UTC [27007] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'cell' AS anon_1 
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id 
+	WHERE db_dbnode.attributes ? 'cell'
+2019-10-09 11:36:18.868 UTC [27007] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin LOG:  EXECUTOR STATISTICS
+2019-10-09 11:36:18.868 UTC [27007] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin DETAIL:  ! system usage stats:
+	!	0.879443 s user, 0.192479 s system, 4.667811 s elapsed
+	!	[0.894227 s user, 0.192479 s system total]
+	!	306936/0 [308624/88] filesystem blocks in/out
+	!	0/48785 [1/49703] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	2014/523 [2095/523] voluntary/involuntary context switches
+2019-10-09 11:36:18.868 UTC [27007] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'cell' AS anon_1 
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id 
+	WHERE db_dbnode.attributes ? 'cell'
+2019-10-09 11:36:18.868 UTC [27007] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin LOG:  duration: 4958.996 ms
+
+SQL query size:
+---------------
+
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy_300_no_gin run q_py_dj_jsonb_aldjemy_no_group.py "cell"
+Query time (in secs): 1.01057386398, Result size: 19667
+Size of serialized reply (in bytes): 8164031
+
+real    0m1.955s
+user    0m1.735s
+sys     0m0.922s
+
+Db log:
+-------
+2019-10-09 11:38:00.503 UTC [27087] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'cell' AS anon_1 
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id 
+	WHERE db_dbnode.attributes ? 'cell'
+2019-10-09 11:38:01.081 UTC [27087] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin LOG:  EXECUTOR STATISTICS
+2019-10-09 11:38:01.081 UTC [27087] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin DETAIL:  ! system usage stats:
+	!	0.545824 s user, 0.022892 s system, 0.578350 s elapsed
+	!	[0.554736 s user, 0.024118 s system total]
+	!	0/0 [0/88] filesystem blocks in/out
+	!	0/5737 [0/6493] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	11/0 [29/0] voluntary/involuntary context switches
+2019-10-09 11:38:01.081 UTC [27087] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'cell' AS anon_1 
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id 
+	WHERE db_dbnode.attributes ? 'cell'
+2019-10-09 11:38:01.081 UTC [27087] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin LOG:  duration: 580.184 ms
+
+SQL query size:
+---------------
+
+
+================================ 300k kinds ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy_300_no_gin run q_py_dj_jsonb_aldjemy_no_group.py "kinds"
+Query time (in secs): 5.63258600235, Result size: 19667
+Size of serialized reply (in bytes): 11535478
+
+real    0m13.410s
+user    0m2.224s
+sys     0m1.018s
+
+Db log:
+-------
+2019-10-09 11:30:16.267 UTC [26663] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'kinds' AS anon_1 
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id 
+	WHERE db_dbnode.attributes ? 'kinds'
+2019-10-09 11:30:20.967 UTC [26663] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin LOG:  EXECUTOR STATISTICS
+2019-10-09 11:30:20.967 UTC [26663] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin DETAIL:  ! system usage stats:
+	!	0.954026 s user, 0.261000 s system, 4.700405 s elapsed
+	!	[0.960110 s user, 0.273169 s system total]
+	!	274824/0 [276504/88] filesystem blocks in/out
+	!	0/46398 [0/47319] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	2068/376 [2148/376] voluntary/involuntary context switches
+2019-10-09 11:30:20.967 UTC [26663] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'kinds' AS anon_1 
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id 
+	WHERE db_dbnode.attributes ? 'kinds'
+2019-10-09 11:30:20.967 UTC [26663] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin LOG:  duration: 4970.590 ms
+
+SQL query size:
+---------------
+
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy_300_no_gin run q_py_dj_jsonb_aldjemy_no_group.py "kinds"
+Query time (in secs): 1.27383708954, Result size: 19667
+Size of serialized reply (in bytes): 11535478
+
+real    0m2.320s
+user    0m2.166s
+sys     0m0.890s
+
+Db log:
+-------
+2019-10-09 11:34:57.240 UTC [26834] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'kinds' AS anon_1 
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id 
+	WHERE db_dbnode.attributes ? 'kinds'
+2019-10-09 11:34:57.839 UTC [26834] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin LOG:  EXECUTOR STATISTICS
+2019-10-09 11:34:57.839 UTC [26834] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin DETAIL:  ! system usage stats:
+	!	0.567981 s user, 0.020270 s system, 0.598897 s elapsed
+	!	[0.574781 s user, 0.023784 s system total]
+	!	0/0 [0/88] filesystem blocks in/out
+	!	0/6102 [0/6860] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	9/2 [27/2] voluntary/involuntary context switches
+2019-10-09 11:34:57.839 UTC [26834] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'kinds' AS anon_1 
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id 
+	WHERE db_dbnode.attributes ? 'kinds'
+2019-10-09 11:34:57.839 UTC [26834] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin LOG:  duration: 601.192 ms
+
+SQL query size:
+---------------
+
+
+================================ 300k sites ================================
+
+
+<---------------- Cold DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy_300_no_gin run q_py_dj_jsonb_aldjemy_no_group.py "sites"
+Query time (in secs): 11.0162718296, Result size: 19667
+Size of serialized reply (in bytes): 210500720
+
+real    0m25.350s
+user    0m15.101s
+sys     0m1.932s
+
+Db log:
+-------
+2019-10-09 07:16:41.490 UTC [18107] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'sites' AS anon_1 
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id 
+	WHERE db_dbnode.attributes ? 'sites'
+2019-10-09 07:16:46.006 UTC [18107] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin LOG:  EXECUTOR STATISTICS
+2019-10-09 07:16:46.006 UTC [18107] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin DETAIL:  ! system usage stats:
+	!	2.101292 s user, 0.287717 s system, 4.515935 s elapsed
+	!	[2.119381 s user, 0.287717 s system total]
+	!	110256/0 [111992/88] filesystem blocks in/out
+	!	0/24546 [3/25468] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	965/752 [1048/754] voluntary/involuntary context switches
+2019-10-09 07:16:46.006 UTC [18107] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'sites' AS anon_1 
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id 
+	WHERE db_dbnode.attributes ? 'sites'
+2019-10-09 07:16:46.006 UTC [18107] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin LOG:  duration: 4823.914 ms
+
+SQL query size:
+---------------
+
+
+<---------------- Warm DB ---------------->
+
+Verdi console:
+--------------
+(aiidapy2) szoupanos@theospc22:~/development/aiida_experiments/speedup_experiments/1.x_v2/scripts$ time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy_300_no_gin run q_py_dj_jsonb_aldjemy_no_group.py "sites"
+Query time (in secs): 8.04718399048, Result size: 19667
+Size of serialized reply (in bytes): 210500720
+
+real    0m16.090s
+user    0m14.693s
+sys     0m1.657s
+
+Db log:
+-------
+2019-10-09 07:17:32.380 UTC [18162] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'sites' AS anon_1 
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id 
+	WHERE db_dbnode.attributes ? 'sites'
+2019-10-09 07:17:33.955 UTC [18162] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin LOG:  EXECUTOR STATISTICS
+2019-10-09 07:17:33.955 UTC [18162] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin DETAIL:  ! system usage stats:
+	!	1.433634 s user, 0.132742 s system, 1.574765 s elapsed
+	!	[1.440582 s user, 0.136434 s system total]
+	!	0/0 [0/88] filesystem blocks in/out
+	!	0/15404 [0/16164] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	1/7 [18/7] voluntary/involuntary context switches
+2019-10-09 07:17:33.955 UTC [18162] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin STATEMENT:  SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'sites' AS anon_1 
+	FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id 
+	WHERE db_dbnode.attributes ? 'sites'
+2019-10-09 07:17:33.955 UTC [18162] aiida@aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin LOG:  duration: 1576.551 ms
+
+SQL query size:
+---------------
+
+
+
+
