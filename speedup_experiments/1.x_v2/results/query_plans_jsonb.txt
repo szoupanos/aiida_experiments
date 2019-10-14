@@ -1,0 +1,116 @@
+Query plans on JSONB databases
+
+With group selection
+====================
+====================
+
+davide_dj_jsonb_original_seb_copy_m37_copy
+==========================================
+Database containing all nodes and a group with 200K nodes.
+GIN index available
+
+Script: time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy run q_py_dj_jsonb_aldjemy.py "20160222-225236_200k" "cell"
+
+aiida_dj_jsonb_original_seb_copy_m37_copy=# EXPLAIN ANALYZE SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'cell' AS anon_1 FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id WHERE db_dbgroup.label = '20160222-225236_200k' AND db_dbnode.attributes ? 'cell';
+
+
+QUERY PLAN
+---------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=1.27..2629.85 rows=1 width=133) (actual time=18.644..2262.070 rows=13147 loops=1)
+   ->  Nested Loop  (cost=0.84..1867.27 rows=293 width=8) (actual time=17.799..909.539 rows=200000 loops=1)
+         ->  Index Scan using db_dbgroup_name_30351f1c64285f22_like on db_dbgroup  (cost=0.41..8.43 rows=1 width=4) (actual time=0.040..0.040 rows=1 loops=1)
+               Index Cond: ((label)::text = '20160222-225236_200k'::text)
+         ->  Index Scan using db_dbgroup_dbnodes_a0b4eda0 on db_dbgroup_dbnodes db_dbgroup_dbnodes_1  (cost=0.43..1785.00 rows=7384 width=8) (actual time=17.754..888.855 rows=200000 loops=1)
+               Index Cond: (dbgroup_id = db_dbgroup.id)
+   ->  Index Scan using db_dbnode_pkey on db_dbnode  (cost=0.43..2.60 rows=1 width=133) (actual time=0.005..0.005 rows=0 loops=200000)
+         Index Cond: (id = db_dbgroup_dbnodes_1.dbnode_id)
+         Filter: (attributes ? 'cell'::text)
+         Rows Removed by Filter: 1
+ Planning time: 3.552 ms
+ Execution time: 2263.102 ms
+(12 rows)
+
+
+davide_dj_jsonb_original_seb_copy_m37
+=====================================
+Database containing all nodes and a group with 200K nodes.
+No GIN index available
+
+aiida_dj_jsonb_original_seb_copy_m37=# EXPLAIN ANALYZE SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'cell' AS anon_1 FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id WHERE db_dbgroup.label = '20160222-225236_200k' AND db_dbnode.attributes ? 'cell';
+                                                                          QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=1.28..2778.92 rows=1 width=133) (actual time=0.021..0.021 rows=0 loops=1)
+   ->  Nested Loop  (cost=0.84..2119.79 rows=250 width=8) (actual time=0.021..0.021 rows=0 loops=1)
+         ->  Index Scan using db_dbgroup_name_30351f1c64285f22_like on db_dbgroup  (cost=0.41..8.43 rows=1 width=4) (actual time=0.020..0.020 rows=0 loops=1)
+               Index Cond: ((label)::text = '20160222-225236_200k'::text)
+         ->  Index Scan using db_dbgroup_dbnodes_a0b4eda0 on db_dbgroup_dbnodes db_dbgroup_dbnodes_1  (cost=0.43..2052.15 rows=5921 width=8) (never executed)
+               Index Cond: (dbgroup_id = db_dbgroup.id)
+   ->  Index Scan using db_dbnode_pkey on db_dbnode  (cost=0.44..2.64 rows=1 width=133) (never executed)
+         Index Cond: (id = db_dbgroup_dbnodes_1.dbnode_id)
+         Filter: (attributes ? 'cell'::text)
+ Planning time: 2.545 ms
+ Execution time: 0.103 ms
+(11 rows)
+
+
+Without group selection
+=======================
+=======================
+
+aiida_dj_jsonb_original_seb_copy_m37_copy_200_gin
+=================================================
+200K database containing only the interesting nodes with GIN index
+
+Script: time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy_200_gin run q_py_dj_jsonb_aldjemy_no_group.py "cell"
+
+aiida_dj_jsonb_original_seb_copy_m37_copy_200_gin=# EXPLAIN ANALYZE SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'cell' AS anon_1 FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id WHERE db_dbnode.attributes ? 'cell';
+
+
+QUERY PLAN
+---------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=26.26..2298.68 rows=200 width=133) (actual time=59.008..2608.112 rows=13147 loops=1)
+   ->  Nested Loop  (cost=25.97..2236.71 rows=200 width=308) (actual time=58.964..2301.010 rows=13147 loops=1)
+         ->  Bitmap Heap Scan on db_dbnode  (cost=25.55..731.21 rows=200 width=308) (actual time=58.940..2008.414 rows=13147 loops=1)
+               Recheck Cond: (attributes ? 'cell'::text)
+               Heap Blocks: exact=4975
+               ->  Bitmap Index Scan on attribute_gin  (cost=0.00..25.50 rows=200 width=0) (actual time=48.933..48.933 rows=13147 loops=1)
+                     Index Cond: (attributes ? 'cell'::text)
+         ->  Index Scan using db_dbgroup_dbnodes_7a672316 on db_dbgroup_dbnodes db_dbgroup_dbnodes_1  (cost=0.42..7.52 rows=1 width=8) (actual time=0.021..0.021 rows=1 loops=13147)
+               Index Cond: (dbnode_id = db_dbnode.id)
+   ->  Index Only Scan using db_dbgroup_pkey on db_dbgroup  (cost=0.29..0.31 rows=1 width=4) (actual time=0.002..0.002 rows=1 loops=13147)
+         Index Cond: (id = db_dbgroup_dbnodes_1.dbgroup_id)
+         Heap Fetches: 13147
+ Planning time: 350.304 ms
+ Execution time: 2609.784 ms
+(14 rows)
+
+
+
+aiida_dj_jsonb_original_seb_copy_m37_copy_200_gin_no_gin
+========================================================
+200K database containing only the interesting nodes without GIN index
+
+Script: time verdi -p davide_dj_jsonb_original_seb_copy_m37_copy_200_no_gin run q_py_dj_jsonb_aldjemy_no_group.py "cell"
+
+aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin=# EXPLAIN ANALYZE SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'cell' AS anon_1 FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id WHERE db_dbnode.attributes ? 'cell';
+
+QUERY PLAN
+---------------------------------------------------------------------------------------------------------
+ Gather  (cost=1000.71..11564.46 rows=200 width=133) (actual time=3.502..2594.460 rows=13147 loops=1)
+   Workers Planned: 2
+   Workers Launched: 2
+   ->  Nested Loop  (cost=0.71..10544.16 rows=83 width=133) (actual time=55.457..2539.131 rows=4382 loops=3)
+         ->  Nested Loop  (cost=0.42..10518.45 rows=83 width=308) (actual time=55.396..2411.537 rows=4382 loops=3)
+               ->  Parallel Seq Scan on db_dbnode  (cost=0.00..9893.67 rows=83 width=308) (actual time=21.504..1996.820 rows=4382 loops=3)
+                     Filter: (attributes ? 'cell'::text)
+                     Rows Removed by Filter: 62284
+               ->  Index Scan using db_dbgroup_dbnodes_7a672316 on db_dbgroup_dbnodes db_dbgroup_dbnodes_1  (cost=0.42..7.52 rows=1 width=8) (actual time=0.093..0.093 rows=1 loops=13147)
+                     Index Cond: (dbnode_id = db_dbnode.id)
+         ->  Index Only Scan using db_dbgroup_pkey on db_dbgroup  (cost=0.29..0.31 rows=1 width=4) (actual time=0.002..0.002 rows=1 loops=13147)
+               Index Cond: (id = db_dbgroup_dbnodes_1.dbgroup_id)
+               Heap Fetches: 5663
+ Planning time: 281.980 ms
+ Execution time: 2595.639 ms
+(15 rows)
+
+
