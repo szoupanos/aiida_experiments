@@ -8,7 +8,52 @@ This corresponds to commit 1956cfad8 for AiiDA Django EAV and a7c3ac4e4 of aiida
 
 Speed benchmarks
 ================
-These benchmarks were performed using the AiiDA Django JSONB and AiiDA Django EAV using an extension of Mounet's database provided by Davide. They were performed on a group of 200.000 nodes (and in specific cases on a group of 300.000 nodes - it will be mentioned explicitly). The results using a cold database (database after restart with clean cache) and a warm database (launching the same query for a second time - the database cache containes the previous results) are presented.
+These benchmarks were performed using the AiiDA Django JSONB and AiiDA Django EAV using an extension of Mounet's database provided by Davide. The benchmarks were peformed on the full database (around 7 milion nodes) as well as on subsets of the database (on 200K nodes and 300K nodes). The results using a cold database (database after restart with clean cache) and a warm database (launching the same query for a second time - the database cache containes the previous results) are presented.
+
+All the benchmarks were run once (so there might be a few descrepancies in the numbers - especially for timings that could be less than a second).
+
+
+Django JSONB -  comparison on the benefits of a GIN index and datetime deactivation (full database)
+----------------------------------------------------------------------------------------------------------------------------------------------------
+In this set of benchmarks, we check the benefints of using a GIN index in JSONB related queries as well as well the benefits from using the datetime.
+
+**GIN and datetime benefits on a cold database - Full database benchmark**
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_cold_gin_comparison.svg "")
+
+**GIN and datetime benefits on a warm database - Full database benchmark**
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_warm_gin_comparison.svg "")
+
+**Comments:**
+- Overall the graphs seem normal. 
+- The performance gains of the GIN index can be seen mainly in the benchmarks of 'Cells' and 'Kinds' (total execution time). 
+- The performance gains are also obvious at the SQL time of the graphs for all kinds of attributes 'Cells', 'Kinds' and 'Sites'.
+- The usage of GIN index doesn't seem to have an effect on the total execution time for 'Sites'.
+- What I can not explain is why the total execution time with GIN and datetime conversion is higher than the total execution time without GIN and datetime conversion. If we remove the SQL time from the total execution time of these graphs (JSONB with GIN, with DT and JSONB no GIN with DT), these results become even more inexplicable. In a few words, it seems that the datetime conversion takes more time for the same nodes when a GIN index is not used!! What is even worse is that this doesn't seem to be a mistake in the measurements since this difference & pattern appears in the benchmarks of this sectio (#1 & #2) but also at the measurements of the following sections. Any ideas?
+
+**Notes on the benchmarks**
+The benchmarks that correspond to this section are #1 and #2 of the following notebook
+https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/graphs.ipynb
+
+
+Data come from the following files:
+- speed_tests_aiida_gin_test_jsonb_with_gin_full_db.txt
+- speed_tests_aiida_gin_test_jsonb_with_gin_no_datetime_full_db.txt
+- speed_tests_aiida_gin_test_jsonb_without_gin_full_db.txt
+- speed_tests_aiida_gin_test_jsonb_without_gin_no_datetime_full_db.txt
+
+ Databases used:
+- aiida_dj_jsonb_original_seb_copy_m37_copy (With GIN index on attributes)
+- aiida_dj_jsonb_original_seb_copy_m37 (Without GIN index on attributes)
+
+
+Django JSONB -  comparison on the benefits of a GIN index and datetime deactivation vs Django EAV (partial database)
+----------------------------------------------------------------------------------------------------------------------------------------------------
+In this set of benchmarks, we check the benefints of using a GIN index in JSONB related queries as well as well the benefits from using the datetime and we make the direct comparison with the performance of the Django EAV version of AiiDA.
+
+
+=========== UNTIL HERE ===========
+
+
 
 
 Django JSONB (with and without datetime conversion)
