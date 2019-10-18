@@ -48,7 +48,45 @@ Data come from the following files:
 
 Django JSONB -  comparison on the benefits of a GIN index and datetime deactivation vs Django EAV (partial database)
 ----------------------------------------------------------------------------------------------------------------------------------------------------
-In this set of benchmarks, we check the benefints of using a GIN index in JSONB related queries as well as well the benefits from using the datetime and we make the direct comparison with the performance of the Django EAV version of AiiDA.
+In this set of benchmarks, we check the benefints of using a GIN index in JSONB related queries as well as  the benefits from using the datetime and we make the direct comparison with the performance of the Django EAV version of AiiDA.
+
+**JSONB GIN and datetime benefits vs EAV with datetime - 200k node database - Cold DB**
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_cold_gin_comparison.svg "")
+
+**JSONB GIN and datetime benefits vs EAV with datetime - 200k node database - Warm DB**
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_warm_gin_comparison.svg "")
+
+**JSONB GIN and datetime benefits vs EAV with datetime - 300k node database - Cold DB**
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_300_cold_gin_comparison.svg "")
+
+**JSONB GIN and datetime benefits vs EAV with datetime - 300k node database - Warm DB**
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_300_warm_gin_comparison.svg "")
+
+**Notes on the benchmarks**
+The benchmarks that correspond to this section are #3, #4, #5 and #6 of the following notebook
+https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/graphs.ipynb
+
+
+**Comments:**
+- The graphs are good to show the difference between the EAV and the JSONB approach.
+- They are also good to show the 
+- However there are some results
+
+Data come from the following files:
+- speed_tests_aiida_gin_test_jsonb_with_gin_full_db.txt
+- speed_tests_aiida_gin_test_jsonb_with_gin_no_datetime_full_db.txt
+- speed_tests_aiida_gin_test_jsonb_without_gin_full_db.txt
+- speed_tests_aiida_gin_test_jsonb_without_gin_no_datetime_full_db.txt
+
+ Databases used:
+- aiida_dj_jsonb_original_seb_copy_m37_copy_200_gin
+- aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin
+- aiida_dj_jsonb_original_seb_copy_m36_copy_200_gin
+
+- aiida_dj_jsonb_original_seb_copy_m37_copy_300_gin
+- aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin
+- aiida_dj_jsonb_original_seb_copy_m36_copy_300_gin
+
 
 
 =========== UNTIL HERE ===========
