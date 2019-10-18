@@ -69,8 +69,10 @@ https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1
 
 **Comments:**
 - The graphs are good to show the difference between the EAV and the JSONB approach.
-- They are also good to show the 
-- However there are some results
+- They are also good to show that the speed difference gets significant when a lot of attributes need to be de-serialized E.g. 'Sites'
+- The graphs are not good to show the differences between the variations in the exeucution of JSONB approach (e.g. with or without GIN, with or without GIN serialization)
+- Some of the results (200k nodes, cold DB, Sites, JSONB with GIN & no datetime) don't make a lot of sense. The execution time is too high. But maybe something happened at during that measurement.
+- 
 
 Data come from the following files:
 - speed_tests_aiida_gin_test_jsonb_with_gin_full_db.txt
