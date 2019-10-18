@@ -537,4 +537,23 @@ SQL query size:
 
 
 
+                                                                                         QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+aiida_dj_jsonb_original_seb_copy_m37_copy=# EXPLAIN ANALYZE SELECT db_dbgroup.id AS db_dbgroup_id, db_dbnode.uuid AS db_dbnode_uuid, db_dbnode.node_type AS db_dbnode_node_type, db_dbnode.process_type AS db_dbnode_process_type, db_dbnode.label AS db_dbnode_label, db_dbnode.description AS db_dbnode_description, db_dbnode.ctime AS db_dbnode_ctime, db_dbnode.mtime AS db_dbnode_mtime, db_dbnode.attributes -> 'cell' AS anon_1 FROM db_dbgroup JOIN db_dbgroup_dbnodes AS db_dbgroup_dbnodes_1 ON db_dbgroup_dbnodes_1.dbgroup_id = db_dbgroup.id JOIN db_dbnode ON db_dbgroup_dbnodes_1.dbnode_id = db_dbnode.id WHERE db_dbgroup.label = '20160222-225236_200k' AND db_dbnode.attributes ? 'cell';
+
+
+ Nested Loop  (cost=1.27..2629.85 rows=1 width=133) (actual time=203.155..68268.195 rows=13147 loops=1)
+   ->  Nested Loop  (cost=0.84..1867.27 rows=293 width=8) (actual time=35.799..8802.626 rows=200000 loops=1)
+         ->  Index Scan using db_dbgroup_name_30351f1c64285f22_like on db_dbgroup  (cost=0.41..8.43 rows=1 width=4) (actual time=8.584..8.585 rows=1 loops=1)
+               Index Cond: ((label)::text = '20160222-225236_200k'::text)
+         ->  Index Scan using db_dbgroup_dbnodes_a0b4eda0 on db_dbgroup_dbnodes db_dbgroup_dbnodes_1  (cost=0.43..1785.00 rows=7384 width=8) (actual time=27.210..8729.485 rows=200000 loops=1)
+               Index Cond: (dbgroup_id = db_dbgroup.id)
+   ->  Index Scan using db_dbnode_pkey on db_dbnode  (cost=0.43..2.60 rows=1 width=133) (actual time=0.294..0.294 rows=0 loops=200000)
+         Index Cond: (id = db_dbgroup_dbnodes_1.dbnode_id)
+         Filter: (attributes ? 'cell'::text)
+         Rows Removed by Filter: 1
+ Planning time: 813.164 ms
+ Execution time: 68272.167 ms
+(12 rows)
 

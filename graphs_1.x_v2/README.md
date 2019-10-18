@@ -72,33 +72,30 @@ https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1
 - They are also good to show that the speed difference gets significant when a lot of attributes need to be de-serialized E.g. 'Sites'
 - The graphs are not good to show the differences between the variations in the exeucution of JSONB approach (e.g. with or without GIN, with or without GIN serialization)
 - Some of the results (200k nodes, cold DB, Sites, JSONB with GIN & no datetime) don't make a lot of sense. The execution time is too high. But maybe something happened at during that measurement.
-- 
 
 Data come from the following files:
-- speed_tests_aiida_gin_test_jsonb_with_gin_full_db.txt
-- speed_tests_aiida_gin_test_jsonb_with_gin_no_datetime_full_db.txt
-- speed_tests_aiida_gin_test_jsonb_without_gin_full_db.txt
-- speed_tests_aiida_gin_test_jsonb_without_gin_no_datetime_full_db.txt
+- speed_tests_aiida_gin_test_eav.txt
+    - the total time reported in the graphs is the addition of query time 
+      and serialization time. The SQL time is the time reported by PostgreSQL
+- speed_tests_aiida_gin_test_jsonb_with_gin_no_datetime.txt
+- speed_tests_aiida_gin_test_jsonb_with_gin.txt
+- speed_tests_aiida_gin_test_jsonb_without_gin_no_datetime.txt
+- speed_tests_aiida_gin_test_jsonb_without_gin.txt
 
  Databases used:
 - aiida_dj_jsonb_original_seb_copy_m37_copy_200_gin
 - aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin
 - aiida_dj_jsonb_original_seb_copy_m36_copy_200_gin
-
 - aiida_dj_jsonb_original_seb_copy_m37_copy_300_gin
 - aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin
 - aiida_dj_jsonb_original_seb_copy_m36_copy_300_gin
 
 
 
-=========== UNTIL HERE ===========
-
-
-
 
 Django JSONB (with and without datetime conversion)
 ---------------------------------------------------------------------------------
-In this set of benchmarks we check the overhead of the datetime conversion for the Django JSONB version with cold and warm database
+In this set of benchmarks we check the overhead of the datetime conversion for the Django JSONB version with cold and warm database. The database has a GIN index on the attributes but it is not used (maybe it is not considered useful for these queries). The queries were performed on a group containing 200k nodes of the full database of 7 milion nodes.
 
 **With & without datetime conversion on a group of 200K nodes and a cold database**
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_cold_with_attr_jsonb_datetime.svg "")
@@ -107,14 +104,26 @@ In this set of benchmarks we check the overhead of the datetime conversion for t
 **With & without datetime conversion on a group of 200K nodes and a warm database**
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_warm_with_attr_jsonb_datetime.svg "")
 
-Input data can be found at the following files:
+**Notes on the benchmarks**
+The benchmarks that correspond to this section are #7 and #8 of the following notebook
+https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/graphs.ipynb
+
+**Comments:**
+- Even if the database had an index on the attributes it was not used. Look at the query plans in the result files speed_tests_aiida_jsonb_small.txt & speed_tests_aiida_jsonb_small_no_datetime.txt.
+- The graphs are nice, especially the one on the warm database. The only downside that I find is that the dataset is small and the differences are not so obvious, especially for 'Cell' & 'Kinds'.
+
+
+Data come from the following files:
 - speed_tests_aiida_jsonb_small.txt (JSONB - with datetime conversion)
 - speed_tests_aiida_jsonb_small_no_datetime.txt (JSONB - without datetime conversion)
+
+Databases used:
+- aiida_dj_jsonb_original_seb_copy_m37_copy
 
 
 Django EAV vs Django JSONB (with datetime conversion - one EAV query)
 --------------------------------------------------------------------------------------------------------------
-In this set of benchmarks we check the difference between AiiDA Django EAV and Django JSONB with datetime conversion on a cold and a warm database. It is worth noting that in these benchmarks of Django EAV we issue one query to retrieve all the node information and attributes/extras of the nodes of a group. This is different than the default behaviour of AiiDA when using querybuilder that will first get the node information and then for each node, it will fetch its attributes/extras issueing a different query.
+In this set of benchmarks we check the difference between AiiDA Django EAV and Django JSONB with datetime conversion on a cold and a warm database. It is worth noting that in these benchmarks of Django EAV we issue one query to retrieve all the node information and attributes/extras of the nodes of a group. This is different than the default behaviour of AiiDA when using querybuilder that will first get the node information and then for each node, it will fetch its attributes/extras issuing a different query.
 
 The serialization is performed at the Python level
 
@@ -124,9 +133,23 @@ The serialization is performed at the Python level
 **Django EAV vs Django JSONB on a group of 200K nodes and a warm database - one EAV query**
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_warm_with_attr_ser_one_eav_query.svg "")
 
-Input data can be found at the following files:
+**Notes on the benchmarks**
+The benchmarks that correspond to this section are #9 and #10 of the following notebook
+https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/graphs.ipynb
+
+**Comments:**
+- None. The graphs seem good, especialy the one on a warm database
+
+Data come from the following files:
 - speed_tests_aiida_eav_small_ser_v3.txt (EAV)
 - speed_tests_aiida_jsonb_small.txt (JSONB)
+
+Databases used:
+- aiida_dj_jsonb_original_seb_copy_m36_copy
+- aiida_dj_jsonb_original_seb_copy_m37_copy
+
+=========== UNTIL HERE ===========
+
 
 Django EAV vs Django JSONB (with datetime conversion - multiple EAV queries)
 ----------------------------------------------------------------------------------------------------------------------
