@@ -62,16 +62,15 @@ In this set of benchmarks, we check the benefints of using a GIN index in JSONB 
 **JSONB GIN and datetime benefits vs EAV with datetime - 300k node database - Warm DB**
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_300_warm_gin_comparison.svg "")
 
-**Source of the benchmarks**
-The benchmarks that correspond to this section are #3, #4, #5 and #6 of the following notebook
-https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/graphs.ipynb
-
-
 **Comments:**
 - The graphs are good to show the difference between the EAV and the JSONB approach.
 - They are also good to show that the speed difference gets significant when a lot of attributes need to be de-serialized E.g. 'Sites'
 - The graphs are not good to show the differences between the variations in the exeucution of JSONB approach (e.g. with or without GIN, with or without GIN serialization)
 - Some of the results (200k nodes, cold DB, Sites, JSONB with GIN & no datetime) don't make a lot of sense. The execution time is too high. But maybe something happened at during that measurement.
+
+**Source of the benchmarks**
+The benchmarks that correspond to this section are #3, #4, #5 and #6 of the following notebook
+https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/graphs.ipynb
 
 Data come from the following files:
 - speed_tests_aiida_gin_test_eav.txt
@@ -104,14 +103,13 @@ In this set of benchmarks we check the overhead of the datetime conversion for t
 **With & without datetime conversion on a group of 200K nodes and a warm database**
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_warm_with_attr_jsonb_datetime.svg "")
 
-**Source of the benchmarks**
-The benchmarks that correspond to this section are #7 and #8 of the following notebook
-https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/graphs.ipynb
-
 **Comments:**
 - Even if the database had an index on the attributes it was not used. Look at the query plans in the result files speed_tests_aiida_jsonb_small.txt & speed_tests_aiida_jsonb_small_no_datetime.txt.
 - The graphs are nice, especially the one on the warm database. The only downside that I find is that the dataset is small and the differences are not so obvious, especially for 'Cell' & 'Kinds'.
 
+**Source of the benchmarks**
+The benchmarks that correspond to this section are #7 and #8 of the following notebook
+https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/graphs.ipynb
 
 Data come from the following files:
 - speed_tests_aiida_jsonb_small.txt (JSONB - with datetime conversion)
@@ -133,12 +131,12 @@ The serialization is performed at the Python level
 **Django EAV vs Django JSONB on a group of 200K nodes and a warm database - one EAV query**
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_warm_with_attr_ser_one_eav_query.svg "")
 
+**Comments:**
+- None. The graphs seem good, especialy the one on a warm database
+
 **Source of the benchmarks**
 The benchmarks that correspond to this section are #9 and #10 of the following notebook
 https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/graphs.ipynb
-
-**Comments:**
-- None. The graphs seem good, especialy the one on a warm database
 
 Data come from the following files:
 - speed_tests_aiida_eav_small_ser_v3.txt (EAV)
