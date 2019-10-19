@@ -48,7 +48,9 @@ Data come from the following files:
 
 Django JSONB -  comparison on the benefits of a GIN index and datetime deactivation vs Django EAV (partial database)
 ----------------------------------------------------------------------------------------------------------------------------------------------------
-In this set of benchmarks, we check the benefints of using a GIN index in JSONB related queries as well as  the benefits from using the datetime and we make the direct comparison with the performance of the Django EAV version of AiiDA.
+In this set of benchmarks, we check the benefits of using a GIN index in JSONB related queries as well as  the benefits from using the datetime and we make the direct comparison with the performance of the Django EAV version of AiiDA.
+
+The main characteristic of this benchmarks is that the database used contain only the nodes that interest us (200k / 300k) - in comparison to the benchmarks of the following sections that contain all the nodes and we focus only of a group of nodes that we find interesting. This is done to get the benefits of the GIN index since from the analysis of the query plans, it seems that the GIN index is not used when querying the attributes of nodes that belong to a specific group.
 
 **JSONB GIN and datetime benefits vs EAV with datetime - 200k node database - Cold DB**
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_cold_gin_comparison.svg "")
