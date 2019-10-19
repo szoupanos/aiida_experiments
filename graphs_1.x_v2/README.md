@@ -30,7 +30,7 @@ In this set of benchmarks, we check the benefints of using a GIN index in JSONB 
 - The usage of GIN index doesn't seem to have an effect on the total execution time for 'Sites'.
 - What I can not explain is why the total execution time with GIN and datetime conversion is higher than the total execution time without GIN and datetime conversion. If we remove the SQL time from the total execution time of these graphs (JSONB with GIN, with DT and JSONB no GIN with DT), these results become even more inexplicable. In a few words, it seems that the datetime conversion takes more time for the same nodes when a GIN index is not used!! This difference & pattern appears in the benchmarks of this section (#1 & #2) but also, on a much smaller scale, at the measurements of the following sections (that could be also at the level of error). Any ideas?
 
-**Notes on the benchmarks**
+**Source of the benchmarks**
 The benchmarks that correspond to this section are #1 and #2 of the following notebook
 https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/graphs.ipynb
 
@@ -62,7 +62,7 @@ In this set of benchmarks, we check the benefints of using a GIN index in JSONB 
 **JSONB GIN and datetime benefits vs EAV with datetime - 300k node database - Warm DB**
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_300_warm_gin_comparison.svg "")
 
-**Notes on the benchmarks**
+**Source of the benchmarks**
 The benchmarks that correspond to this section are #3, #4, #5 and #6 of the following notebook
 https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/graphs.ipynb
 
@@ -104,7 +104,7 @@ In this set of benchmarks we check the overhead of the datetime conversion for t
 **With & without datetime conversion on a group of 200K nodes and a warm database**
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_warm_with_attr_jsonb_datetime.svg "")
 
-**Notes on the benchmarks**
+**Source of the benchmarks**
 The benchmarks that correspond to this section are #7 and #8 of the following notebook
 https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/graphs.ipynb
 
@@ -133,7 +133,7 @@ The serialization is performed at the Python level
 **Django EAV vs Django JSONB on a group of 200K nodes and a warm database - one EAV query**
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_warm_with_attr_ser_one_eav_query.svg "")
 
-**Notes on the benchmarks**
+**Source of the benchmarks**
 The benchmarks that correspond to this section are #9 and #10 of the following notebook
 https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/graphs.ipynb
 
