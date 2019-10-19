@@ -8,7 +8,7 @@ This corresponds to commit 1956cfad8 for AiiDA Django EAV and a7c3ac4e4 of aiida
 
 Speed benchmarks
 ================
-These benchmarks were performed using the AiiDA Django JSONB and AiiDA Django EAV using an extension of Mounet's database provided by Davide. The benchmarks were peformed on the full database (around 7 milion nodes) as well as on subsets of the database (on 200K nodes and 300K nodes). The results using a cold database (database after restart with clean cache) and a warm database (launching the same query for a second time - the database cache containes the previous results) are presented.
+These benchmarks were performed using the AiiDA Django JSONB and AiiDA Django EAV using an extension of Mounet's database provided by Davide. The benchmarks were peformed on the full database (around 7 milion nodes) as well as on subsets of the database (on 200K nodes and 300K nodes). The results using a cold database (database after restart with clean cache) and a warm database (launching the same query for a second time - the database cache contains the previous results) are presented.
 
 All the benchmarks were run once (so there might be a few descrepancies in the numbers - especially for timings that could be less than a second or a few seconds).
 
