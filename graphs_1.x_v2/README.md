@@ -71,7 +71,7 @@ Having databases with only the nodes that interest us, allow us to demonstrate t
 - The graphs are good to show the difference between the EAV and the JSONB approach.
 - They are also good to show that the speed difference gets significant when a lot of attributes need to be de-serialized E.g. 'Sites'
 - The graphs are not good to show the differences between the variations in the exeucution of JSONB approach (e.g. with or without GIN, with or without GIN serialization)
-- Some of the results (200k nodes, cold DB, Sites, JSONB with GIN & no datetime) don't make a lot of sense. The execution time is too high. But maybe something happened at during that measurement.
+- Some of the results (200k nodes, cold DB, Sites, JSONB with GIN & no datetime) don't make a lot of sense. The execution time is too high. But maybe something happened during that measurement.
 
 **Source of the benchmarks**
 The benchmarks that correspond to this section are #3, #4, #5 and #6 of the following notebook
@@ -104,9 +104,14 @@ In this set of benchmarks we check the overhead of the datetime conversion for t
 **With & without datetime conversion on a group of 200K nodes and a cold database**
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_cold_with_attr_jsonb_datetime.svg "")
 
-
 **With & without datetime conversion on a group of 200K nodes and a warm database**
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_warm_with_attr_jsonb_datetime.svg "")
+
+**With & without datetime conversion on a group of 300K nodes and a cold database**
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_300_cold_with_attr_jsonb_datetime.svg "")
+
+**With & without datetime conversion on a group of 300K nodes and a warm database**
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_300_warm_with_attr_jsonb_datetime.svg "")
 
 **Comments:**
 - Even if the database had an index on the attributes it was not used. Look at the query plans in the result files speed_tests_aiida_jsonb_small.txt & speed_tests_aiida_jsonb_small_no_datetime.txt.
