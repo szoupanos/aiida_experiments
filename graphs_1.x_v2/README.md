@@ -133,7 +133,7 @@ Django EAV vs Django JSONB (with datetime conversion - one EAV query)
 --------------------------------------------------------------------------------------------------------------
 In this set of benchmarks we check the difference between AiiDA Django EAV and Django JSONB with datetime conversion on a cold and a warm database. It is worth noting that in these benchmarks of Django EAV we issue one query to retrieve all the node information and attributes/extras of the nodes of a group. This is different than the default behaviour of AiiDA when using querybuilder that will first get the node information and then for each node, it will fetch its attributes/extras issuing a different query.
 
-The deserialization/reconstruction is performed at the Python level.
+The deserialization/reconstruction of the attribuetes is performed at the Python level.
 
 **Django EAV vs Django JSONB on a group of 200K nodes and a cold database - one EAV query**
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_cold_with_attr_ser_one_eav_query.svg "")
@@ -142,7 +142,8 @@ The deserialization/reconstruction is performed at the Python level.
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_200_warm_with_attr_ser_one_eav_query.svg "")
 
 **Comments:**
-- None. The graphs seem good, especialy the one on a warm database
+- The graph for the warm database seems interesting.
+- Regarding the graph for the cold database: I am a bit surprised by the constant high SQL time for the EAV case. It should have been lower for 'Cell' and 'Kinds' than 'Sites' since the size of the attributes is lower (and the transferred data). It is also surprising that such a difference in SQL time is shown for the warm database case (same scripts used)
 
 **Source of the benchmarks**
 The benchmarks that correspond to this section are #9 and #10 of the following notebook
@@ -163,7 +164,7 @@ Django EAV vs Django JSONB (with datetime conversion - multiple EAV queries)
 ----------------------------------------------------------------------------------------------------------------------
 In this set of benchmarks we check the difference between AiiDA Django EAV and Django JSONB with datetime conversion on a cold and a warm database. 
 
-The main difference between these benchmarks and those found just above is that a single query is issued for every node to get the attributes of the node. This results in many small queries for the Django EAV and this is the current behaviour QueryBuilder's queries.
+The main difference between these benchmarks and those found just above is that a single query is issued for every node to get the attributes of the node. This results in many small queries for the Django EAV and this is the current behaviour QueryBuilder's queries. In the Django EAV benchmark the total time reported includes the deserialization/reconstruction of the attribuetes at the Pyhton level.
 
 Because of the high volume of attribute queries issues, SQL time in the Django EAV can not be reported.
 
@@ -173,11 +174,20 @@ Because of the high volume of attribute queries issues, SQL time in the Django E
 **Django EAV vs Django JSONB on a group of 200K nodes and a warm database - Multiple EAV queries**
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_300_warm_with_attr_ser.svg "")
 
+**Comments:**
+- These graphs are valuable for understanding how bad the current EAV implementation for querying the attributes is/performs.
+
+**Source of the benchmarks**
+The benchmarks that correspond to this section are #11 and #12 of the following notebook
+https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/graphs.ipynb
+
 Data come from the following files:
+- speed_tests_aiida_eav_small_ser_v2.txt (EAV)
 - speed_tests_aiida_jsonb_small.txt (JSONB)
-- to be found for the EAV
 
 Databases used:
+- aiida_dj_jsonb_original_seb_copy_m36_copy
+- aiida_dj_jsonb_original_seb_copy_m37_copy
 
 Space benchmarks
 ================
