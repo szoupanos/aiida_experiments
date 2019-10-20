@@ -219,6 +219,18 @@ Databases used:
 
 Storage space benchmarks
 ======================
+In this benchmark we measure the space occupied on disk by a selection of XSF files (converted the provided CIFs from Leopold to XSFs), the size of a Django EAV database with only this information as well as the size of a Django JSONB database with these files loaded. For the Django JSONB, we have a version without GIN index (it seemed that it is the default for the version that I had - the migration was not adding a GIN index on the attributes & extras) and a version with GIN index on these collumns (I added it manually on attributes & extras).
+
+The measurements were taked after a full vacuum of the corresponding databases.
+
+
+**Django EAV vs Django JSONB vs disk space size for 100.000 data structures**
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/space_saving_tests/1.x_v2/space_v1_10k_with_gin.svg "")
+
+
+**Comments:**
+- I believe that the graph above demonstrates well the benefits of using JSONB and gives a good understanding of the space used in the various approaches (raw files, EAV, JSONB, JSONB with indexes)
+
 Comments on structure data usage:
 - we use structure data because they are a good example. I.e. they are used in calculations (inputs & outputs) and they have various information that are stored as attributes (interesting for our backend comparison)
 - the CIF files contain more information than what we store in AiiDA (database) for a structure data object
@@ -232,6 +244,15 @@ Space comparison among:
 
 The XSFs will not be stored in the repository when I load them in AiiDA.
 
-**Django EAV vs Django JSONB vs disk space size for 100.000 data structures**
-![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/space_saving_tests/1.x_v2/space_v1_10k.svg "")
+**Source of the benchmarks**
+The benchmark that correspond to this section is #b2 of the following notebook
+https://github.com/szoupanos/aiida_experiments/blob/master/space_saving_tests/1.x_v2/graphs.ipynb
+
+Data come from the following files:
+- space_saving_tests/1.x_v2/results.txt
+
+Databases used:
+- aiidadb_django_eav_space_10k
+- aiidadb_django_jsonb_space_10k
+- aiidadb_django_jsonb_space_10k_copy_gin
 
