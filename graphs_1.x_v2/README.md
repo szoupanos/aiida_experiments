@@ -10,7 +10,7 @@ Speed benchmarks
 ================
 These benchmarks were performed using the AiiDA Django JSONB and AiiDA Django EAV using an extension of Mounet's database provided by Davide. The benchmarks were peformed on the full database (around 7 milion nodes) as well as on subsets of the database (on 200K nodes and 300K nodes). The results using a cold database (database after restart with clean cache) and a warm database (launching the same query for a second time - the database cache contains the previous results) are presented.
 
-All the benchmarks were run once (so there might be a few descrepancies in the numbers - especially for timings that could be less than a second or a few seconds).
+All the benchmarks were run once (so there might be a few descrepancies in the numbers - especially for timings that could be less than a second or very few seconds).
 
 
 Django JSONB -  comparison on the benefits of a GIN index and datetime deactivation (full database)
@@ -28,7 +28,7 @@ In this set of benchmarks, we check the benefints of using a GIN index in JSONB 
 - The performance gains of the GIN index can be seen mainly in the benchmarks of 'Cells' and 'Kinds' (total execution time). 
 - The performance gains are also obvious at the SQL time of the graphs for all kinds of attributes 'Cells', 'Kinds' and 'Sites'.
 - The usage of GIN index doesn't seem to have an effect on the total execution time for 'Sites'.
-- What I can not explain is why the total execution time with GIN and datetime conversion is higher than the total execution time without GIN and datetime conversion. If we remove the SQL time from the total execution time of these graphs (JSONB with GIN, with DT and JSONB no GIN with DT), these results become even more inexplicable. In a few words, it seems that the datetime conversion takes more time for the same nodes when a GIN index is not used!! This difference & pattern appears in the benchmarks of this section (#1 & #2) but also, on a much smaller scale, at the measurements of the following sections (that could be also at the level of error). Any ideas?
+- What I can not explain is why the total execution time with GIN and datetime conversion is higher than the total execution time without GIN and datetime conversion. If we remove the SQL time from the total execution time of these graphs (JSONB with GIN, with DT and JSONB no GIN with DT), these results become even more inexplicable. In a few words, it seems that the datetime conversion takes more time for the same nodes when a GIN index is not used! This difference & pattern appears in the benchmarks of this section (#1 & #2) but also, on a much smaller scale, at the measurements of the following sections (that could be also at the level of error). Any ideas?
 
 **Source of the benchmarks**
 The benchmarks that correspond to this section are #1 and #2 of the following notebook
@@ -69,7 +69,7 @@ Having databases with only the nodes that interest us, allow us to demonstrate t
 
 **Comments:**
 - The graphs are good to show the difference between the EAV and the JSONB approach.
-- They are also good to show that the speed difference gets significant when a lot of attributes need to be de-serialized E.g. 'Sites'
+- They are also good to show that the speed difference becomes significant when a lot of attributes need to be de-serialized E.g. 'Sites'
 - The graphs are not good to show the differences between the variations in the exeucution of JSONB approach (e.g. with or without GIN, with or without GIN serialization)
 - Some of the results (200k nodes, cold DB, Sites, JSONB with GIN & no datetime) don't make a lot of sense. The execution time is too high. But maybe something happened during that measurement.
 
