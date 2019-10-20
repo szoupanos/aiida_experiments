@@ -1,25 +1,12 @@
 Benchmarks on loading 10k structures
 ====================================
+====================================
 Folder with XSF files
 /scratch/spyros_backup/theospc38/home/szoupanos/structure_datasets/medium_10k/converted_xsf
 
 
 EAV schema (commit 1956cfad8)
------------------------------
-Space:
-postgres=# SELECT pg_size_pretty(pg_database_size('aiidadb_django_eav_space')) As fulldbsize;
- fulldbsize 
-------------
- 22 GB
-(1 row)
-
-postgres=# SELECT pg_database_size('aiidadb_django_eav_space') As fulldbsize;
- fulldbsize  
--------------
- 23687584903
-(1 row)
-
-
+====================================
 Time:
 time verdi -p aiida_django_eav_space run import_xsf.py
 real    1264m13.298s
@@ -27,16 +14,49 @@ user    1167m35.300s
 sys     1m3.635s
 
 
-JSONB schema (commit a7c3ac4e4 -aiida/django_jsonb)
----------------------------------------------------
+Before full vacuum on the db
+----------------------------
 Space:
-postgres=# SELECT pg_size_pretty(pg_database_size('aiidadb_django_jsonb_space')) As fulldbsize;
+postgres=# SELECT pg_size_pretty(pg_database_size('aiidadb_django_eav_space_10k')) As fulldbsize;
+ fulldbsize 
+------------
+ 22 GB
+(1 row)
+
+aiidadb_django_jsonb_space_10k_copy_gin=# SELECT pg_database_size('aiidadb_django_eav_space_10k') As fulldbsize;
+ fulldbsize
+-------------
+ 23687642247
+(1 row)
+
+After full vacuum on the db
+---------------------------
+postgres=# SELECT pg_size_pretty(pg_database_size('aiidadb_django_eav_space_10k')) As fulldbsize;
+ fulldbsize
+------------
+ 18 GB
+(1 row)
+
+postgres=# SELECT pg_database_size('aiidadb_django_eav_space_10k') As fulldbsize;
+ fulldbsize
+-------------
+ 19266256007
+(1 row)
+
+
+
+JSONB schema (commit a7c3ac4e4 -aiida/django_jsonb)
+===================================================
+(Without GIN index on attributes and extras)
+
+Space:
+postgres=# SELECT pg_size_pretty(pg_database_size('aiidadb_django_jsonb_space_10k')) As fulldbsize;
  fulldbsize 
 ------------
  519 MB
 (1 row)
 
-postgres=# SELECT pg_database_size('aiidadb_django_jsonb_space') As fulldbsize;
+postgres=# SELECT pg_database_size('aiidadb_django_jsonb_space_10k') As fulldbsize;
  fulldbsize 
 ------------
   544062599
@@ -49,9 +69,57 @@ real    93m29.587s
 user    76m59.300s
 sys     0m17.949s
 
+After full vacuum on the db
+---------------------------
+postgres=# SELECT pg_size_pretty(pg_database_size('aiidadb_django_jsonb_space_10k')) As fulldbsize;
+ fulldbsize
+------------
+ 436 MB
+(1 row)
+
+postgres=# SELECT pg_database_size('aiidadb_django_jsonb_space_10k') As fulldbsize;
+ fulldbsize
+------------
+  456719495
+(1 row)
+
+
+
+JSONB schema (commit a7c3ac4e4 -aiida/django_jsonb)
+===================================================
+(With GIN index on attributes and extras)
+
+aiidadb_django_jsonb_space_10k_copy_gin=# SELECT pg_size_pretty(pg_database_size('aiidadb_django_jsonb_space_10k_copy_gin')) As fulldbsize;
+ fulldbsize
+------------
+ 2587 MB
+(1 row)
+
+aiidadb_django_jsonb_space_10k_copy_gin=# SELECT pg_database_size('aiidadb_django_jsonb_space_10k_copy_gin') As fulldbsize;
+ fulldbsize
+------------
+ 2713156743
+(1 row)
+
+
+After full vacuum on the db
+---------------------------
+postgres=# SELECT pg_size_pretty(pg_database_size('aiidadb_django_jsonb_space_10k_copy_gin')) As fulldbsize;
+ fulldbsize
+------------
+ 2504 MB
+(1 row)
+
+postgres=# SELECT pg_database_size('aiidadb_django_jsonb_space_10k_copy_gin') As fulldbsize;
+ fulldbsize
+------------
+ 2625641607
+(1 row)
+
+
 
 File size of XSDF file folder
----------------------------------------------------
+=============================
 
 szoupanos@theospc22:/scratch/spyros_backup/theospc38/home/szoupanos/structure_datasets/medium_10k/converted_xsf$ du  -B1 .
 753803264	.
