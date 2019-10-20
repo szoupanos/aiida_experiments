@@ -1,7 +1,7 @@
 # aiida_benchmarks using AiiDA v1
 
-There are two different kinds of benchmarks that have been peformed.
-Benchmarks to measure speed gains and benchmarks to measure space gains.
+There are three different kinds of benchmarks that have been peformed.
+Benchmarks to measure speed gains, benchmark to measure the data transfered and benchmarks to measure storage space gains.
 All the benchmarks found below are based on the Django EAV version which is just before and after the conversion to AiiDA Django JSONB.
 This corresponds to commit 1956cfad8 for AiiDA Django EAV and a7c3ac4e4 of aiida/django_jsonb branch.
 
@@ -157,8 +157,6 @@ Databases used:
 - aiida_dj_jsonb_original_seb_copy_m36_copy
 - aiida_dj_jsonb_original_seb_copy_m37_copy
 
-=========== UNTIL HERE ===========
-
 
 Django EAV vs Django JSONB (with datetime conversion - multiple EAV queries)
 ----------------------------------------------------------------------------------------------------------------------
@@ -189,8 +187,38 @@ Databases used:
 - aiida_dj_jsonb_original_seb_copy_m36_copy
 - aiida_dj_jsonb_original_seb_copy_m37_copy
 
-Space benchmarks
-================
+
+Data transfer benchmarks
+=====================
+
+In this benchmark, we measure the size of the reply at the at SQL level (the size of the output of the query to txt) 
+and the size of the reply at Python level. It is interesting to note that for the Django EAV, one query is issued, 
+which returns all the attributes of all the interesting nodes (no deserialization is included)
+
+**Django EAV vs Django JSONB data transfer - One EAV query**
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_300_size.svg "")
+
+**Comments:**
+- Nice graphs to see the difference in size of the reply for Django EAV and Django JSONB but also how the size changes for different attribute selection.
+- This graphs can be combined with speed benchmarks to have a better understanding of the reported timings.
+- The difference of the reply size between SQL and Python is negligible and moreover, the SQL reported size is questionable (size of the reply of the SQL query in a txt)
+
+**Source of the benchmarks**
+The benchmark that correspond to this section is #15 of the following notebook
+https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/graphs.ipynb
+
+Data come from the following files:
+- speed_tests_aiida_eav_small.txt (EAV)
+- speed_tests_aiida_jsonb_small.txt (JSONB)
+
+Databases used:
+- aiida_dj_jsonb_original_seb_copy_m36_copy
+- aiida_dj_jsonb_original_seb_copy_m37_copy
+
+
+
+Storage space benchmarks
+======================
 Comments on structure data usage:
 - we use structure data because they are a good example. I.e. they are used in calculations (inputs & outputs) and they have various information that are stored as attributes (interesting for our backend comparison)
 - the CIF files contain more information than what we store in AiiDA (database) for a structure data object
@@ -207,9 +235,3 @@ The XSFs will not be stored in the repository when I load them in AiiDA.
 **Django EAV vs Django JSONB vs disk space size for 100.000 data structures**
 ![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/space_saving_tests/1.x_v2/space_v1_10k.svg "")
 
-
-Notes for Spyros
-==============
-What remains to be added - mentioned
-    - I should show the size of the final result in the speed benchmarks
-    - I should give an intution of the GIN index speed increase
