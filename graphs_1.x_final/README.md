@@ -11,17 +11,16 @@ The main characteristic of the benchmarks of this section is that the databases 
 
 
 **JSONB (without GIN and datetime) vs EAV with datetime - 200k node database - Cold DB**
-![alt text]
-(https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_final/graphs/attr_queries_200_cold_eav_json_comparison.svg "")
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_final/attr_queries_200_cold_eav_json_comparison.svg "")
 
 **JSONB (without GIN and datetime) vs EAV with datetime - 200k node database - Warm DB**
-![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_final/graphs/attr_queries_200_warm_eav_json_comparison.svg "")
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_final/attr_queries_200_warm_eav_json_comparison.svg "")
 
 **JSONB (without GIN and datetime) vs EAV with datetime - 300k node database - Cold DB**
-![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_300_cold_eav_json_comparison.svg "")
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_final/attr_queries_300_cold_eav_json_comparison.svg "")
 
 **JSONB (without GIN and datetime) vs EAV with datetime - 300k node database - Warm DB**
-![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/graphs/attr_queries_300_warm_eav_json_comparison.svg "")
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_final/attr_queries_300_warm_eav_json_comparison.svg "")
 
 **Comments:**
 - The benchmarks to create the graphs mentioned above were run only once.
