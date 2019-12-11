@@ -5,7 +5,7 @@ Django JSONB -  comparison on the benefits of JSONB (no GIN index and without da
 
 This is the final set of speed benchmarks that we have decided to keep from a bigger list of benchmarks that can be found at the following page:
 
-aiida_experiments/graphs_1.x_v2/
+[Speed & space benchmarks using AiiDA 1.0](https://github.com/szoupanos/aiida_experiments/tree/master/graphs_1.x_v2)
 
 The main characteristic of the benchmarks of this section is that the databases used contain only the nodes that interest us (200k / 300k). Nodes that we consider interesting.
 
