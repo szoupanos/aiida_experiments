@@ -33,11 +33,9 @@ Data come from the following files:
 - [speed_tests_aiida_gin_test_jsonb_without_gin_no_datetime.txt](https://github.com/szoupanos/aiida_experiments/blob/master/speedup_experiments/1.x_v2/results/speed_tests_aiida_gin_test_jsonb_without_gin_no_datetime.txt)
 
 
- Databases used (to be verified):
-- aiida_dj_jsonb_original_seb_copy_m37_copy_200_gin
+ Databases used:
 - aiida_dj_jsonb_original_seb_copy_m37_copy_200_no_gin
 - aiida_dj_jsonb_original_seb_copy_m36_copy_200_gin
-- aiida_dj_jsonb_original_seb_copy_m37_copy_300_gin
 - aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin
 - aiida_dj_jsonb_original_seb_copy_m36_copy_300_gin
 
