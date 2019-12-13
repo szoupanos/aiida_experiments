@@ -25,6 +25,9 @@ real    0m21.959s
 user    0m7.142s
 sys     0m2.234s
 
+10,8692679405 + 3,59495782852 = 14,46422576902
+
+
 Db log:
 -------
 2019-12-12 18:46:22.059 UTC [3137] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy_300_gin STATEMENT:  SELECT "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") WHERE "db_dbattribute"."key"::text LIKE 'cell%'
@@ -51,6 +54,8 @@ Size of serialized reply (in bytes): 74120992
 real    0m22.355s
 user    0m7.210s
 sys     0m2.135s
+
+11,194453001 + 3,63400197029 = 14,82845497129
 
 Db log:
 -------
@@ -79,6 +84,8 @@ real    0m22.094s
 user    0m7.213s
 sys     0m2.236s
 
+10,9214980602 + 3,6921248436 = 14,6136229038
+
 Db log:
 -------
 2019-12-12 18:49:18.888 UTC [3474] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy_300_gin STATEMENT:  SELECT "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") WHERE "db_dbattribute"."key"::text LIKE 'cell%'
@@ -101,6 +108,8 @@ Verdi console:
 Query time (in secs) [no serialization of attributes]: 2.3481771946, Result size: 255671
 Serialization time (in secs): 4.6314098835, Result size: 255671
 Size of serialized reply (in bytes): 74120992
+
+2,3481771946 + 4,6314098835 = 6,9795870781
 
 real    0m9.091s
 user    0m7.309s
@@ -129,6 +138,8 @@ Query time (in secs) [no serialization of attributes]: 2.23754405975, Result siz
 Serialization time (in secs): 3.75343585014, Result size: 255671
 Size of serialized reply (in bytes): 74120992
 
+2,23754405975 + 3,75343585014 = 5,99097990989
+
 real    0m8.182s
 user    0m6.949s
 sys     0m2.029s
@@ -155,6 +166,8 @@ Verdi console:
 Query time (in secs) [no serialization of attributes]: 2.29642295837, Result size: 255671
 Serialization time (in secs): 3.68487691879, Result size: 255671
 Size of serialized reply (in bytes): 74120992
+
+2,29642295837 + 3,68487691879 = 5,98129987716
 
 real    0m8.075s
 user    0m6.923s
@@ -190,6 +203,9 @@ real    0m26.761s
 user    0m13.113s
 sys     0m1.561s
 
+12,5147302151 + 5,23645210266 = 17,75118231776
+
+
 Db log:
 -------
 2019-12-12 18:35:23.015 UTC [2082] aiida@aiida_dj_jsonb_original_seb_copy_m36_copy_300_gin STATEMENT:  SELECT "db_dbattribute"."dbnode_id", "db_dbnode"."uuid", "db_dbnode"."node_type", "db_dbnode"."process_type", "db_dbnode"."label", "db_dbnode"."description", "db_dbnode"."ctime", "db_dbnode"."mtime", "db_dbattribute"."key", "db_dbattribute"."datatype", "db_dbattribute"."tval", "db_dbattribute"."fval", "db_dbattribute"."ival", "db_dbattribute"."bval", "db_dbattribute"."dval" FROM "db_dbattribute" INNER JOIN "db_dbnode" ON ("db_dbattribute"."dbnode_id" = "db_dbnode"."id") WHERE "db_dbattribute"."key"::text LIKE 'kinds%'
@@ -213,6 +229,8 @@ Verdi console:
 Query time (in secs) [no serialization of attributes]: 13.1254439354, Result size: 537303
 Serialization time (in secs): 5.18220996857, Result size: 537303
 Size of serialized reply (in bytes): 157798391
+
+13,1254439354 + 5,18220996857 = 18,30765390397
 
 real    0m27.320s
 user    0m13.084s
@@ -241,6 +259,8 @@ Query time (in secs) [no serialization of attributes]: 12.5850040913, Result siz
 Serialization time (in secs): 5.3532948494, Result size: 537303
 Size of serialized reply (in bytes): 157798391
 
+12,5850040913 + 5,3532948494 = 17,9382989407
+
 real    0m27.253s
 user    0m13.542s
 sys     0m1.400s
@@ -267,6 +287,8 @@ Verdi console:
 Query time (in secs) [no serialization of attributes]: 4.46098208427, Result size: 537303
 Serialization time (in secs): 5.32100510597, Result size: 537303
 Size of serialized reply (in bytes): 157798391
+
+4,46098208427 + 5,32100510597 = 9,78198719024
 
 real    0m13.681s
 user    0m12.909s
@@ -295,6 +317,8 @@ Query time (in secs) [no serialization of attributes]: 4.4417860508, Result size
 Serialization time (in secs): 5.42697691917, Result size: 537303
 Size of serialized reply (in bytes): 157798391
 
+4,4417860508 + 5,42697691917 = 9,86876296997
+
 real    0m13.758s
 user    0m13.065s
 sys     0m1.261s
@@ -321,6 +345,8 @@ Verdi console:
 Query time (in secs) [no serialization of attributes]: 4.46821188927, Result size: 537303
 Serialization time (in secs): 5.26486492157, Result size: 537303
 Size of serialized reply (in bytes): 157798391
+
+4,46821188927 + 5,26486492157 = 9,73307681084
 
 real    0m13.389s
 user    0m12.736s
@@ -353,6 +379,9 @@ Query time (in secs) [no serialization of attributes]: 115.562286854, Result siz
 Serialization time (in secs): 1509.72953105, Result size: 15352241
 Size of serialized reply (in bytes): 4625807053
 
+115,562286854 + 1509,72953105 = 1625,291817904
+
+
 real    28m43.654s
 user    28m9.388s
 sys     0m12.815s
@@ -381,6 +410,8 @@ Query time (in secs) [no serialization of attributes]: 119.791527987, Result siz
 Serialization time (in secs): 1523.27900982, Result size: 15352241
 Size of serialized reply (in bytes): 4625807053
 
+119,791527987 + 1523,27900982 = 1643,070537807
+
 real    28m59.201s
 user    28m21.261s
 sys     0m13.209s
@@ -407,6 +438,8 @@ Verdi console:
 Query time (in secs) [no serialization of attributes]: 121.077422857, Result size: 15352241
 Serialization time (in secs): 1523.83421588, Result size: 15352241
 Size of serialized reply (in bytes): 4625807053
+
+121,077422857 + 1523,83421588 = 1644,911638737
 
 real    29m1.446s
 user    28m26.529s
@@ -435,6 +468,8 @@ Query time (in secs) [no serialization of attributes]: 113.172405005, Result siz
 Serialization time (in secs): 1514.9352951, Result size: 15352241
 Size of serialized reply (in bytes): 4625807053
 
+113,172405005 + 1514,9352951 = 1628,107700105
+
 real    28m39.786s
 user    28m14.206s
 sys     0m12.735s
@@ -462,6 +497,8 @@ Query time (in secs) [no serialization of attributes]: 112.321514845, Result siz
 Serialization time (in secs): 1522.99386692, Result size: 15352241
 Size of serialized reply (in bytes): 4625807053
 
+112,321514845 + 1522,99386692 = 1635,315381765
+
 real    28m48.115s
 user    28m22.713s
 sys     0m12.438s
@@ -488,6 +525,8 @@ Verdi console:
 Query time (in secs) [no serialization of attributes]: 112.770838976, Result size: 15352241
 Serialization time (in secs): 1532.74871302, Result size: 15352241
 Size of serialized reply (in bytes): 4625807053
+
+112,770838976 + 1532,74871302 = 1645,519551996
 
 real    28m59.468s
 user    28m34.059s
