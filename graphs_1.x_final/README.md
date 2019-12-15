@@ -90,7 +90,8 @@ The graph was constructed at the following notebook file
 
 Information about the size of the indexes and the tables of the databases used in the above graphs.
 
-aiidadb_django_jsonb_space_10k
+
+### aiidadb_django_jsonb_space_10k
 
 
 |   oid   | table_schema |       table_name       | row_estimate | total_bytes | index_bytes | toast_bytes | table_bytes |  total  |  index  |   toast    |   table    |
@@ -110,3 +111,28 @@ aiidadb_django_jsonb_space_10k
 | 2929690 | public       | db_dbuser              |            1 |       65536 |       49152 |        8192 |        8192 | 64 kB   | 48 kB   | 8192 bytes | 8192 bytes |
 | 2929822 | public       | db_dbnode              |        10000 |   447414272 |     3579904 |   441614336 |     2220032 | 427 MB  | 3496 kB | 421 MB     | 2168 kB    |
 | 2929649 | public       | auth_group             |            0 |       24576 |       24576 |             |           0 | 24 kB   | 24 kB   |            | 0 bytes    |
+
+
+### aiidadb_django_eav_space_10k
+
+
+|   oid   | table_schema |       table_name       | row_estimate | total_bytes | index_bytes | toast_bytes | table_bytes |  total  |  index  |   toast    |   table    |
+|---------|--------------|------------------------|--------------|-------------|-------------|-------------|-------------|---------|---------|------------|------------|
+| 2992473 | public       | django_content_type    |           14 |       40960 |       32768 |             |        8192 | 40 kB   | 32 kB   |            | 8192 bytes |
+| 2992462 | public       | django_migrations      |           46 |       32768 |       16384 |        8192 |        8192 | 32 kB   | 16 kB   | 8192 bytes | 8192 bytes |
+| 2992501 | public       | auth_group_permissions |            0 |       32768 |       32768 |             |           0 | 32 kB   | 32 kB   |            | 0 bytes    |
+| 2992683 | public       | db_dbsetting           |            1 |      114688 |       98304 |        8192 |        8192 | 112 kB  | 96 kB   | 8192 bytes | 8192 bytes |
+| 2992653 | public       | db_dblog               |            0 |       65536 |       57344 |        8192 |           0 | 64 kB   | 56 kB   | 8192 bytes | 0 bytes    |
+| 2992483 | public       | auth_permission        |           42 |       57344 |       49152 |             |        8192 | 56 kB   | 48 kB   |            | 8192 bytes |
+| 2992626 | public       | db_dbgroup             |            1 |      147456 |      131072 |        8192 |        8192 | 144 kB  | 128 kB  | 8192 bytes | 8192 bytes |
+| 2992753 | public       | db_dbgroup_dbnodes     |        10000 |     1433600 |      983040 |             |      450560 | 1400 kB | 960 kB  |            | 440 kB     |
+| 2992615 | public       | db_dbextra             |        10000 |     3342336 |     1990656 |        8192 |     1343488 | 3264 kB | 1944 kB | 8192 bytes | 1312 kB    |
+| 2992572 | public       | db_dbauthinfo          |            0 |       40960 |       32768 |        8192 |           0 | 40 kB   | 32 kB   | 8192 bytes | 0 bytes    |
+| 2992561 | public       | db_dbattribute         |  6.59243e|07 | 19248742400 | 13944643584 |        8192 |  5304090624 | 18 GB   | 13 GB   | 8192 bytes | 5058 MB    |
+| 2992591 | public       | db_dbcomment           |            0 |       40960 |       32768 |        8192 |           0 | 40 kB   | 32 kB   | 8192 bytes | 0 bytes    |
+| 2992602 | public       | db_dbcomputer          |            0 |       40960 |       32768 |        8192 |           0 | 40 kB   | 32 kB   | 8192 bytes | 0 bytes    |
+| 2992532 | public       | db_dbuser              |            1 |       65536 |       49152 |        8192 |        8192 | 64 kB   | 48 kB   | 8192 bytes | 8192 bytes |
+| 2992664 | public       | db_dbnode              |        10000 |     4759552 |     3579904 |        8192 |     1171456 | 4648 kB | 3496 kB | 8192 bytes | 1144 kB    |
+| 2992637 | public       | db_dblink              |            0 |       65536 |       57344 |        8192 |           0 | 64 kB   | 56 kB   | 8192 bytes | 0 bytes    |
+| 2992491 | public       | auth_group             |            0 |       24576 |       24576 |             |           0 | 24 kB   | 24 kB   |            | 0 bytes    |
+
