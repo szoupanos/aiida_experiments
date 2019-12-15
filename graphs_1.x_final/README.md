@@ -136,3 +136,21 @@ Information about the size of the indexes and the tables of the databases used i
 | 2992637 | public       | db_dblink              |            0 |       65536 |       57344 |        8192 |           0 | 64 kB   | 56 kB   | 8192 bytes | 0 bytes    |
 | 2992491 | public       | auth_group             |            0 |       24576 |       24576 |             |           0 | 24 kB   | 24 kB   |            | 0 bytes    |
 
+```
+SELECT *, pg_size_pretty(total_bytes) AS total
+    , pg_size_pretty(index_bytes) AS INDEX
+    , pg_size_pretty(toast_bytes) AS toast
+    , pg_size_pretty(table_bytes) AS TABLE
+  FROM (
+  SELECT *, total_bytes-index_bytes-COALESCE(toast_bytes,0) AS table_bytes FROM (
+      SELECT c.oid,nspname AS table_schema, relname AS TABLE_NAME
+              , c.reltuples AS row_estimate
+              , pg_total_relation_size(c.oid) AS total_bytes
+              , pg_indexes_size(c.oid) AS index_bytes
+              , pg_total_relation_size(reltoastrelid) AS toast_bytes
+          FROM pg_class c
+          LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
+          WHERE relkind = 'r' and nspname = 'public'
+  ) a
+) a;
+```
