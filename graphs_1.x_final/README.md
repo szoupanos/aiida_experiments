@@ -2,10 +2,10 @@
 
 In this report we summarise the EAV - JSONB comparison benchmarks that will be used for the AiiDA paper. In the first section we do a speed comparison of the two approaches and in the second section we do a space savings comparison.
 
-## Django JSONB -  comparison on the benefits of JSONB (no GIN index and without datetime vs Django EAV (partial database)
+## Django JSONB -  speed comparison on the benefits of JSONB (no GIN index and without datetime vs Django EAV (partial database)
 
 This section focuses on speed comparisons of the two approaches for storing data.
-In the first sub-section we present the graphs for 200k and 300k nodes that were run only once. In the second sub-section we focus on the 300k node set graphs and we have re-run the benchmarks 3 times for more accurate speed resutls.
+In the first sub-section we present the graphs for 200k and 300k nodes that were run only once. In the second sub-section we focus on the 300k node set graphs and we have re-run the benchmarks 3 times for more accurate speed results.
 
 ### 200k & 300k node Django EAV - JSONB speed comparison - One repetition
 
@@ -70,4 +70,20 @@ Data come from the following files:
 - aiida_dj_jsonb_original_seb_copy_m37_copy_300_no_gin
 - aiida_dj_jsonb_original_seb_copy_m36_copy_300_gin
 
+## Django EAV vs Django JSONB -  space comparison (partial database)
 
+The graph of this section is a simplified version of space comparison graph (last one, after full vacuum of the corresponding databases) found at the following page: [Speed & space benchmarks using AiiDA 1.0](https://github.com/szoupanos/aiida_experiments/tree/master/graphs_1.x_v2)
+
+which comes from the following notebook: 
+[Space comparison notebook](https://github.com/szoupanos/aiida_experiments/blob/master/space_saving_tests/1.x_v2/graphs.ipynb)
+
+And data can be found at the following files:
+- [space_saving_tests/1.x_v2/results.txt](https://github.com/szoupanos/aiida_experiments/blob/master/space_saving_tests/1.x_v2/results.txt)
+
+Using the data of the above mentioned results file, we construct the following graph (measurements after full vacumm of the databases).
+
+**Django EAV vs Django JSONB vs disk space size for 100.000 data structures**
+![alt text](https://github.com/szoupanos/aiida_experiments/blob/master/space_saving_tests/1.x_final/space_v1_10k_eav_vs_jsonb_without_gin_final.svg "")
+
+The graph was constructed at the following notebook file
+[Space comparison notebook](https://github.com/szoupanos/aiida_experiments/blob/master/space_saving_tests/1.x_final/graphs.ipynb)
