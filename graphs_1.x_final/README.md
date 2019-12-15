@@ -136,6 +136,9 @@ Information about the size of the indexes and the tables of the databases used i
 | 2992637 | public       | db_dblink              |            0 |       65536 |       57344 |        8192 |           0 | 64 kB   | 56 kB   | 8192 bytes | 0 bytes    |
 | 2992491 | public       | auth_group             |            0 |       24576 |       24576 |             |           0 | 24 kB   | 24 kB   |            | 0 bytes    |
 
+
+The following query was used to obtain the above statistics
+
 ```
 SELECT *, pg_size_pretty(total_bytes) AS total
     , pg_size_pretty(index_bytes) AS INDEX
