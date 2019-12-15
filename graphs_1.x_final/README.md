@@ -91,6 +91,8 @@ The graph was constructed at the following notebook file
 Information about the size of the indexes and the tables of the databases used in the above graphs.
 
 aiidadb_django_jsonb_space_10k
+
+
 |   oid   | table_schema |       table_name       | row_estimate | total_bytes | index_bytes | toast_bytes | table_bytes |  total  |  index  |   toast    |   table    |
 |---------|--------------|------------------------|--------------|-------------|-------------|-------------|-------------|---------|---------|------------|------------|
 | 2929631 | public       | django_content_type    |           12 |       40960 |       32768 |             |        8192 | 40 kB   | 32 kB   |            | 8192 bytes |
